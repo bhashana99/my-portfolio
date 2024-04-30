@@ -21,13 +21,14 @@ export default function SignIn() {
               placeholder="username"
               className="border p-3 rounded-lg bg-transparent"
               id="username"
-
+              onChange={handleChange}
             />
             <input
             type="password"
             placeholder="password"
             className="border p-3 rounded-lg bg-transparent"
             id="password"
+            onChange={handleChange}
            
           />
           <button
