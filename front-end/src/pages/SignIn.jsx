@@ -6,9 +6,9 @@ export default function SignIn() {
     <div className="bg-zinc-600 min-h-screen flex justify-center items-center ">
       <div className="max-w-4xl mx-auto w-full px-5">
         <div>
-          <Link to="/" className="flex flex-row  items-center">
+          <Link to="/" className="flex flex-row  items-center ">
             <IoIosArrowBack className="text-black text-xl" />
-            <h2 className="font-bold">Back to Home Page</h2>
+            <h2 className="font-bold ">Back to Home Page</h2>
           </Link>
         </div>
         <div>
