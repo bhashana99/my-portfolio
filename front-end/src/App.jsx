@@ -1,6 +1,8 @@
-import { BrowserRouter,Routes, Route } from "react-router-dom"
-import Home from "./pages/Home"
-import SignIn from "./pages/SignIn"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import Edit from "./pages/Edit";
+import PrivateRoute from "./components/PrivateRoute";
 
 export default function App() {
   return (
@@ -8,7 +10,10 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/edit" element={<PrivateRoute />}>
+          <Route path="/edit" element={<Edit />} />
+        </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
