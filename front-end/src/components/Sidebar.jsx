@@ -91,9 +91,9 @@ export default function Sidebar() {
             <Link to="/experience" ><li className="py-2 border-b border-b-gray-600">Work Experience</li></Link>
             <Link to="/contact" ><li className="py-2">Contact</li></Link>
 
-            <li className="py-2 flex flex-row items-center gap-2 text-green-600">
+           <Link to="/setting"> <li className="py-2 flex flex-row items-center gap-2 text-green-600">
               <IoSettingsOutline /> Settings
-            </li>
+            </li></Link>
             <li
               className="py-2 flex flex-row items-center gap-2 text-red-600 cursor-pointer"
               onClick={handleSignOut}
