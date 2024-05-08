@@ -34,7 +34,7 @@ export default function SignIn() {
         return;
       }
      dispatch(signInSuccess(data));
-      navigate("/");
+    navigate("/edit");
 
     } catch (error) {
       dispatch(signInFailure(error.message));
