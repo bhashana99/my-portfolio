@@ -9,6 +9,7 @@ import Education from "./pages/Education";
 import Certificate from "./pages/Certificate";
 import Experience from "./pages/Experience";
 import Contact from "./pages/Contact";
+import Setting from "./pages/Setting";
 import PrivateRoute from "./components/PrivateRoute";
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/certificate" element={<Certificate />} />
           <Route path="/experience" element={<Experience />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/setting" element={<Setting />} />
         </Route>
       </Routes>
     </BrowserRouter>

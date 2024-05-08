@@ -8,11 +8,11 @@ export default function Edit() {
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* side bar */}
-      <div className="basis-1/3">
+      <div className="">
         <Sidebar />
       </div>
       {/* welcome */}
-      <div className="flex-1 flex items-center justify-center h-screen">
+      <div className="flex-1 flex items-center justify-center h-screen md:left-[-30%]">
         <div className="flex flex-col items-center">
           <CiSettings className="text-5xl mb-5 " />
           <h1 className="font-bold font-serif">Hey..Welcome..!</h1>
