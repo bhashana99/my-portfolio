@@ -1,7 +1,6 @@
 import React from "react";
 import { VscSignOut } from "react-icons/vsc";
 import { IoSettingsOutline } from "react-icons/io5";
-import { FaCompressArrowsAlt, FaExpandArrowsAlt } from "react-icons/fa";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import {
@@ -13,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -83,13 +83,13 @@ export default function Sidebar() {
         </div>
         <div>
           <ul className="mt-5 ">
-            <li className="py-2 border-b border-b-gray-600">Basic Info</li>
-            <li className="py-2 border-b border-b-gray-600">Social Media</li>
-            <li className="py-2 border-b border-b-gray-600">Projects</li>
-            <li className="py-2 border-b border-b-gray-600">Education</li>
-            <li className="py-2 border-b border-b-gray-600">Certificate</li>
-            <li className="py-2 border-b border-b-gray-600">Work Experience</li>
-            <li className="py-2">Contact</li>
+            <Link to="/basic-info" ><li className="py-2 border-b border-b-gray-600">Basic Info</li></Link>
+            <Link to="/social-media" ><li className="py-2 border-b border-b-gray-600">Social Media</li></Link>
+            <Link to="/projects" ><li className="py-2 border-b border-b-gray-600">Projects</li></Link>
+            <Link to="/education" ><li className="py-2 border-b border-b-gray-600">Education</li></Link>
+            <Link to="/certificate" ><li className="py-2 border-b border-b-gray-600">Certificate</li></Link>
+            <Link to="/experience" ><li className="py-2 border-b border-b-gray-600">Work Experience</li></Link>
+            <Link to="/contact" ><li className="py-2">Contact</li></Link>
 
             <li className="py-2 flex flex-row items-center gap-2 text-green-600">
               <IoSettingsOutline /> Settings
