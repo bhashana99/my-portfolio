@@ -71,7 +71,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row ">
       <div
         className={
           !showMenu ? "bg-gray-800 text-white p-5 min-h-screen" : "hidden"

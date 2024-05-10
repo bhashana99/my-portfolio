@@ -5,10 +5,10 @@ export default function BasicInfo() {
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
-      <div className="">
+      <div className="fixed top-0 left-0 h-full w-auto">
         <Sidebar />
       </div>
-      <div className="p-5 flex-1">
+      <div className="p-5 flex-1 md:ml-52">
         <h1 className="text-center justify-center text-xl md:text-3xl font-bold ">
           Basic Info
         </h1>
