@@ -11,6 +11,7 @@ import Experience from "./pages/Experience";
 import Contact from "./pages/Contact";
 import Setting from "./pages/Setting";
 import PrivateRoute from "./components/PrivateRoute";
+import CreateProject from "./pages/CreateProject";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/experience" element={<Experience />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/setting" element={<Setting />} />
+          <Route path="/create-project" element={<CreateProject />} />
         </Route>
       </Routes>
     </BrowserRouter>
