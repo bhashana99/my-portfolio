@@ -50,13 +50,14 @@ export const signOut = async (req, res, next) => {
 
 export const changePassword = async (req, res, next) => {
   const { currentPassword, newPassword, confirmPassword } = req.body;
+  const { username } = req.params;
 
   if (newPassword !== confirmPassword) {
     return next(errorHandler(400, "Password does not match!"));
-    
   }
+
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({ username });
     if (!user) {
       return next(errorHandler(404, "User not found!"));
     }
