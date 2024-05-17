@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
+import basicInfoRouter from "./routes/basicInfo.route.js"; 
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.listen(3000, () => {
 });
 
 app.use("/api/user",userRouter);
+app.use("/api/basicInfo", basicInfoRouter)
 
 
 app.use((err, req, res, next) => {

@@ -73,43 +73,10 @@ export default function BasicInfo() {
                   required
                 />
               </div>
-              <div className="flex flex-col gap-2 items-start my-2">
-                <label htmlFor="position">
-                  Current Position{" "}
-                  <span className="text-red-600 text-2xl">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. undergraduate student Software Engineer "
-                  className="p-1 w-full"
-                  id="position"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-2 items-start my-2">
-                <label htmlFor="company">Company</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Google Inc"
-                  className="p-1 w-full"
-                  id="company"
-                />
-              </div>
+              
             </div>
             <div className="flex-1">
-              <div className="flex flex-col gap-2 items-start my-2">
-                <label htmlFor="uni">
-                  University / College{" "}
-                  <span className="text-red-600 text-2xl">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. University of Kelaniya"
-                  className="p-1 w-full"
-                  id="uni"
-                  required
-                />
-              </div>
+              
 
               <div className="flex flex-col gap-2 items-start my-2">
                 <label htmlFor="country">
