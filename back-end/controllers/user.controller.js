@@ -1,8 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import {errorHandler} from "../utils/error.js";
-
+import { errorHandler } from "../utils/error.js";
 
 export const registerUser = async (req, res, next) => {
   const { username, password } = req.body;
@@ -26,7 +25,7 @@ export const signIn = async (req, res, next) => {
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) return next(errorHandler(401, "Wrong credential!"));
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET); 
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...rest } = validUser._doc;
 
     res
@@ -35,17 +34,44 @@ export const signIn = async (req, res, next) => {
       })
       .status(200)
       .json(rest);
-
   } catch (error) {
     next(error);
   }
 };
 
-export const signOut = async(req,res,next)=>{
+export const signOut = async (req, res, next) => {
   try {
     res.clearCookie("access_token");
-    res.status(200).json('User has been logged out!');
+    res.status(200).json("User has been logged out!");
   } catch (error) {
     next(error);
   }
-}
+};
+
+export const changePassword = async (req, res, next) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+
+  if (newPassword !== confirmPassword) {
+    return next(errorHandler(400, "Password does not match!"));
+    
+  }
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return next(errorHandler(404, "User not found!"));
+    }
+
+    const validPassword = bcryptjs.compareSync(currentPassword, user.password);
+    if (!validPassword) {
+      return next(errorHandler(401, "Current Password is incorrect!"));
+    }
+
+    const hashedNewPassword = bcryptjs.hashSync(newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.status(200).json("Password has been changed successfully!");
+  } catch (error) {
+    next(error);
+  }
+};
