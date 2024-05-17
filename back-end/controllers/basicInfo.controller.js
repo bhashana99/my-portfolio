@@ -27,3 +27,12 @@ export const updateBasicInfo = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getBasicInfo = async (req, res, next) => {
+  try {
+    const basicInfo = await BasicInfo.find();
+    return res.status(200).json(basicInfo);
+  } catch (error) {
+    next(error);
+  }
+}
