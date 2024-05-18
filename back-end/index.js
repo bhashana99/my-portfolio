@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
 import basicInfoRouter from "./routes/basicInfo.route.js"; 
 import socialMediaRouter from "./routes/socialMedia.route.js";
+import contactInfoRouter from "./routes/contact.route.js";
+
 dotenv.config();
 
 mongoose
@@ -26,6 +28,7 @@ app.listen(3000, () => {
 app.use("/api/user",userRouter);
 app.use("/api/basicInfo", basicInfoRouter);
 app.use("/api/socialMedia", socialMediaRouter);
+app.use("/api/contactInfo", contactInfoRouter);
 
 
 app.use((err, req, res, next) => {
