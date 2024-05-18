@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema({
-    projectName:{
+    name:{
         type:String,
         required:true
     
     },
-    projectDescription:{
+    description:{
         type:String,
-        required:true
+       
     },
-    projectImage:{
+    imageUrls:{
         type:Array,
         required:true
     },
