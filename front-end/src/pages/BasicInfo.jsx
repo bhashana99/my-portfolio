@@ -8,7 +8,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { useNavigate } from "react-router-dom";
+
 import { set } from "mongoose";
 import Swal from "sweetalert2";
 
@@ -19,7 +19,6 @@ export default function BasicInfo() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   const Toast = Swal.mixin({
     toast: true,
@@ -30,7 +29,7 @@ export default function BasicInfo() {
     didOpen: (toast) => {
       toast.onmouseenter = Swal.stopTimer;
       toast.onmouseleave = Swal.resumeTimer;
-    }
+    },
   });
 
   const [formData, setFormData] = useState({
@@ -40,9 +39,14 @@ export default function BasicInfo() {
     headline: "",
     about: "",
     country: "",
-    profileImage: "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
+    profileImage:
+      "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
     city: "",
   });
+
+  const [initialFormData, setInitialFormData] = useState({});
+  const [isFormChanged, setIsFormChanged] = useState(false);
+
   // console.log(formData);
   useEffect(() => {
     const fetchBasicInfo = async () => {
@@ -54,6 +58,7 @@ export default function BasicInfo() {
         return;
       }
       setFormData(data);
+      setInitialFormData(data);
     };
     fetchBasicInfo();
 
@@ -61,6 +66,12 @@ export default function BasicInfo() {
       handleImageUpload(file);
     }
   }, [file]);
+
+  useEffect(() => {
+    const hasFormChanged =
+      JSON.stringify(formData) !== JSON.stringify(initialFormData);
+    setIsFormChanged(hasFormChanged);
+  }, [formData, initialFormData]);
 
   const handleImageUpload = (file) => {
     const storage = getStorage(app);
@@ -107,20 +118,18 @@ export default function BasicInfo() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-        
       });
       const data = await res.json();
-      
+
       setLoading(false);
       if (data.success === false) {
         setError(data.message);
       }
-     await Toast.fire({
+      await Toast.fire({
         icon: "success",
-        title: "Basic Info Updated Successfully!"
+        title: "Basic Info Updated Successfully!",
       });
-       window.location.reload();
-     
+      window.location.reload();
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -245,7 +254,6 @@ export default function BasicInfo() {
                   accept="image/.*"
                   className="p-1 "
                   id="profileImage"
-                
                   ref={fileRef}
                   hidden
                 />
@@ -270,7 +278,12 @@ export default function BasicInfo() {
                     ""
                   )}
                 </p>
-                <button className="mt-5 p-3 bg-blue-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+                <button
+                  disabled={!isFormChanged}
+                  className={`mt-5 p-3 bg-blue-700 w-full text-white rounded-lg uppercase hover:opacity-95 ${
+                    !isFormChanged ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
                   Update Basic Info
                 </button>
               </div>
