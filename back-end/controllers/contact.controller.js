@@ -8,3 +8,15 @@ export const createContactInfo = async (req, res, next) => {
         next(error);
     }
 }
+
+export const getContactInfo = async (req, res, next) => {
+    try {
+        const contactInfo = await ContactInfo.findOne();
+        if (!contactInfo) {
+            return res.status(404).json({ message: "Contact Info not found!" });
+        }
+        return res.status(200).json(contactInfo);
+    } catch (error) {
+        next(error);
+    }
+}
