@@ -22,3 +22,22 @@ export const getSocialMedia = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateSocialMedia = async (req,res,next) =>{
+    const socialMedia = await SocialMedia.findById(req.params.id);
+
+    if(!socialMedia){
+        return next(errorHandler(404, "Social Media Details not found!"));
+    }
+
+    try {
+        const updateSocialMedia = await SocialMedia.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {new: true}
+        );
+        return res.status(200).json(updateSocialMedia);
+    } catch (error) {
+        next(error);
+    }
+}
