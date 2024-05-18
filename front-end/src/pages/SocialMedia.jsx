@@ -1,9 +1,26 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import { FaLinkedin,FaStackOverflow ,FaInstagram} from "react-icons/fa";
-import { FaSquareGithub,FaSquareXTwitter,FaMedium } from "react-icons/fa6";
+import { FaLinkedin, FaStackOverflow, FaInstagram } from "react-icons/fa";
+import { FaSquareGithub, FaSquareXTwitter, FaMedium } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 export default function SocialMedia() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 500,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+
   const [formData, setFormData] = useState({
     linkedin: {
       username: "",
@@ -29,29 +46,74 @@ export default function SocialMedia() {
       username: "",
       link: "",
     },
-  })
+  });
 
   const [initialFormData, setInitialFormData] = useState({});
   const [isFormChanged, setIsFormChanged] = useState(false);
 
-  useEffect(()=>{
-    const fetchSocialMedia = async ()=> {
+  useEffect(() => {
+    const fetchSocialMedia = async () => {
       const res = await fetch("/api/socialMedia/get-socialMedia");
       const data = await res.json();
 
-      if(data.success === false){
+      if (data.success === false) {
         console.log(data.message);
         return;
       }
       setFormData(data);
       setInitialFormData(data);
-
     };
 
     fetchSocialMedia();
-  })
+  }, []);
 
-  
+  useEffect(() => {
+    const hasFormChanged =
+      JSON.stringify(formData) !== JSON.stringify(initialFormData);
+    setIsFormChanged(hasFormChanged);
+  }, [formData, initialFormData]);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    const [key, field] = id.split("-");
+    setFormData({
+      ...formData,
+      [key]: {
+        ...formData[key],
+        [field]: value,
+      },
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const id = formData._id;
+
+    try {
+      const res = await fetch(`api/socialMedia/update-socialMedia/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      // console.log(data);
+      if (data.success === false) {
+        setError(data.message);
+      }
+      setLoading(false);
+      await Toast.fire({
+        icon: "success",
+        title: "Updated Successfully!",
+      });
+      window.location.reload();
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
@@ -63,7 +125,7 @@ export default function SocialMedia() {
         <h1 className="text-center justify-center text-xl md:text-3xl font-bold mb-5  ">
           Social Media
         </h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className=" flex flex-col md:flex-row gap-2">
             <div className="flex-1">
               <div className="  border-solid border-2 p-5 mb-5">
@@ -74,28 +136,29 @@ export default function SocialMedia() {
 
                 <div className="flex flex-col gap-5 ">
                   <div className="flex flex-row items-center">
-                    <label htmlFor="linkedinUsername" className="basis-1/3">
+                    <label htmlFor="linkedin-username" className="basis-1/3">
                       Username
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
-                      id="linkedinUsername"
+                      id="linkedin-username"
                       value={formData.linkedin.username}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="flex flex-row items-center">
-                    <label htmlFor="linkedinLink" className="basis-1/3">
+                    <label htmlFor="linkedin-link" className="basis-1/3">
                       Profile Url
                     </label>
                     <textarea
-                      type="text"
                       className="p-1 w-full"
                       placeholder="e.g. www.linkedin.com"
-                      id="linkedinLink"
+                      id="linkedin-link"
                       cols={2}
                       value={formData.linkedin.link}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -108,15 +171,16 @@ export default function SocialMedia() {
 
                 <div className="flex flex-col gap-5 ">
                   <div className="flex flex-row items-center">
-                    <label htmlFor="xUsername" className="basis-1/3">
+                    <label htmlFor="x-username" className="basis-1/3">
                       Username
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
-                      id="xUsername"
+                      id="x-username"
                       value={formData.x.username}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="flex flex-row items-center">
@@ -124,12 +188,12 @@ export default function SocialMedia() {
                       Profile Url
                     </label>
                     <textarea
-                      type="text"
                       className="p-1 w-full"
                       placeholder="e.g. www.x.com"
-                      id="xLink"
+                      id="x-link"
                       cols={2}
                       value={formData.x.link}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -142,28 +206,29 @@ export default function SocialMedia() {
 
                 <div className="flex flex-col gap-5 ">
                   <div className="flex flex-row items-center">
-                    <label htmlFor="mediumUsername" className="basis-1/3">
+                    <label htmlFor="medium-username" className="basis-1/3">
                       Username
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
-                      id="mediumUsername"
+                      id="medium-username"
                       value={formData.medium.username}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="flex flex-row items-center">
-                    <label htmlFor="mediumLink" className="basis-1/3">
+                    <label htmlFor="medium-link" className="basis-1/3">
                       Profile Url
                     </label>
                     <textarea
-                      type="text"
                       className="p-1 w-full"
                       placeholder="e.g. www.medium.com"
-                      id="mediumLink"
+                      id="medium-link"
                       cols={2}
                       value={formData.medium.link}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -178,28 +243,29 @@ export default function SocialMedia() {
 
                 <div className="flex flex-col gap-5 ">
                   <div className="flex flex-row items-center">
-                    <label htmlFor="gitHubUsername" className="basis-1/3">
+                    <label htmlFor="github-username" className="basis-1/3">
                       Username
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
-                      id="gitHubUsername"
+                      id="github-username"
                       value={formData.github.username}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="flex flex-row items-center">
-                    <label htmlFor="gitHubLink" className="basis-1/3">
+                    <label htmlFor="github-link" className="basis-1/3">
                       Profile Url
                     </label>
                     <textarea
-                      type="text"
                       className="p-1 w-full"
                       placeholder="e.g. www.github.com"
-                      id="gitHubLink"
+                      id="github-link"
                       cols={2}
                       value={formData.github.link}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -212,28 +278,29 @@ export default function SocialMedia() {
 
                 <div className="flex flex-col gap-5 ">
                   <div className="flex flex-row items-center">
-                    <label htmlFor="soUsername" className="basis-1/3">
+                    <label htmlFor="stackOverflow-username" className="basis-1/3">
                       Username
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
-                      id="soUsername"
+                      id="stackOverflow-username"
                       value={formData.stackOverflow.username}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="flex flex-row items-center">
-                    <label htmlFor="soLink" className="basis-1/3">
+                    <label htmlFor="stackOverflow-link" className="basis-1/3">
                       Profile Url
                     </label>
                     <textarea
-                      type="text"
                       className="p-1 w-full"
                       placeholder="e.g. www.stackoverflow.com"
-                      id="soLink"
+                      id="stackOverflow-link"
                       cols={2}
                       value={formData.stackOverflow.link}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -246,37 +313,45 @@ export default function SocialMedia() {
 
                 <div className="flex flex-col gap-5 ">
                   <div className="flex flex-row items-center">
-                    <label htmlFor="instaUsername" className="basis-1/3">
+                    <label htmlFor="instagram-username" className="basis-1/3">
                       Username
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
-                      id="instaUsername"
+                      id="instagram-username"
                       value={formData.instagram.username}
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="flex flex-row items-center">
-                    <label htmlFor="instaLink" className="basis-1/3">
+                    <label htmlFor="instagram-link" className="basis-1/3">
                       Profile Url
                     </label>
                     <textarea
-                      type="text"
                       className="p-1 w-full"
                       placeholder="e.g. www.instagram.com"
-                      id="instaLink"
+                      id="instagram-link"
                       cols={2}
                       value={formData.instagram.link}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <button  className="mt-5 p-3 bg-blue-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-          Update Social Media Info
+          <button
+            disabled={!isFormChanged}
+            className={`mt-5 p-3 bg-blue-700 w-full text-white rounded-lg uppercase hover:opacity-95 ${
+              !isFormChanged ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+           {loading ? "Updating..." : "Update Social Media Info"}
+           
           </button>
+          {error && <p className="text-red-700">{error}</p>}
         </form>
       </div>
     </div>

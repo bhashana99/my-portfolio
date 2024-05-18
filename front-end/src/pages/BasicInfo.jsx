@@ -127,7 +127,7 @@ export default function BasicInfo() {
       }
       await Toast.fire({
         icon: "success",
-        title: "Basic Info Updated Successfully!",
+        title: "Updated Successfully!",
       });
       window.location.reload();
     } catch (error) {
@@ -284,7 +284,8 @@ export default function BasicInfo() {
                     !isFormChanged ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
-                  Update Basic Info
+                  {loading ? "Updating..." : "Update Basic Info"}
+                  
                 </button>
               </div>
               {error && <p className="text-red-700">{error}</p>}
