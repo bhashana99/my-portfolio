@@ -30,9 +30,12 @@ export const updateBasicInfo = async (req, res, next) => {
 
 export const getBasicInfo = async (req, res, next) => {
   try {
-    const basicInfo = await BasicInfo.find();
+    const basicInfo = await BasicInfo.findOne();
+    if (!basicInfo) {
+      return res.status(404).json({ message: "Basic Info not found!" });
+    }
     return res.status(200).json(basicInfo);
   } catch (error) {
     next(error);
   }
-}
+};
