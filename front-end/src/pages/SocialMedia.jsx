@@ -1,9 +1,58 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Sidebar from "../components/Sidebar";
 import { FaLinkedin,FaStackOverflow ,FaInstagram} from "react-icons/fa";
 import { FaSquareGithub,FaSquareXTwitter,FaMedium } from "react-icons/fa6";
 
 export default function SocialMedia() {
+  const [formData, setFormData] = useState({
+    linkedin: {
+      username: "",
+      link: "",
+    },
+    x: {
+      username: "",
+      link: "",
+    },
+    medium: {
+      username: "",
+      link: "",
+    },
+    github: {
+      username: "",
+      link: "",
+    },
+    stackOverflow: {
+      username: "",
+      link: "",
+    },
+    instagram: {
+      username: "",
+      link: "",
+    },
+  })
+
+  const [initialFormData, setInitialFormData] = useState({});
+  const [isFormChanged, setIsFormChanged] = useState(false);
+
+  useEffect(()=>{
+    const fetchSocialMedia = async ()=> {
+      const res = await fetch("/api/socialMedia/get-socialMedia");
+      const data = await res.json();
+
+      if(data.success === false){
+        console.log(data.message);
+        return;
+      }
+      setFormData(data);
+      setInitialFormData(data);
+
+    };
+
+    fetchSocialMedia();
+  })
+
+  
+
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
@@ -33,6 +82,7 @@ export default function SocialMedia() {
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
                       id="linkedinUsername"
+                      value={formData.linkedin.username}
                     />
                   </div>
                   <div className="flex flex-row items-center">
@@ -45,6 +95,7 @@ export default function SocialMedia() {
                       placeholder="e.g. www.linkedin.com"
                       id="linkedinLink"
                       cols={2}
+                      value={formData.linkedin.link}
                     />
                   </div>
                 </div>
@@ -65,6 +116,7 @@ export default function SocialMedia() {
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
                       id="xUsername"
+                      value={formData.x.username}
                     />
                   </div>
                   <div className="flex flex-row items-center">
@@ -77,6 +129,7 @@ export default function SocialMedia() {
                       placeholder="e.g. www.x.com"
                       id="xLink"
                       cols={2}
+                      value={formData.x.link}
                     />
                   </div>
                 </div>
@@ -97,6 +150,7 @@ export default function SocialMedia() {
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
                       id="mediumUsername"
+                      value={formData.medium.username}
                     />
                   </div>
                   <div className="flex flex-row items-center">
@@ -109,6 +163,7 @@ export default function SocialMedia() {
                       placeholder="e.g. www.medium.com"
                       id="mediumLink"
                       cols={2}
+                      value={formData.medium.link}
                     />
                   </div>
                 </div>
@@ -131,6 +186,7 @@ export default function SocialMedia() {
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
                       id="gitHubUsername"
+                      value={formData.github.username}
                     />
                   </div>
                   <div className="flex flex-row items-center">
@@ -143,6 +199,7 @@ export default function SocialMedia() {
                       placeholder="e.g. www.github.com"
                       id="gitHubLink"
                       cols={2}
+                      value={formData.github.link}
                     />
                   </div>
                 </div>
@@ -163,6 +220,7 @@ export default function SocialMedia() {
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
                       id="soUsername"
+                      value={formData.stackOverflow.username}
                     />
                   </div>
                   <div className="flex flex-row items-center">
@@ -175,6 +233,7 @@ export default function SocialMedia() {
                       placeholder="e.g. www.stackoverflow.com"
                       id="soLink"
                       cols={2}
+                      value={formData.stackOverflow.link}
                     />
                   </div>
                 </div>
@@ -187,26 +246,28 @@ export default function SocialMedia() {
 
                 <div className="flex flex-col gap-5 ">
                   <div className="flex flex-row items-center">
-                    <label htmlFor="soUsername" className="basis-1/3">
+                    <label htmlFor="instaUsername" className="basis-1/3">
                       Username
                     </label>
                     <input
                       type="text"
                       placeholder="e.g. kasunkalhara "
                       className="p-1 w-full"
-                      id="soUsername"
+                      id="instaUsername"
+                      value={formData.instagram.username}
                     />
                   </div>
                   <div className="flex flex-row items-center">
-                    <label htmlFor="soLink" className="basis-1/3">
+                    <label htmlFor="instaLink" className="basis-1/3">
                       Profile Url
                     </label>
                     <textarea
                       type="text"
                       className="p-1 w-full"
                       placeholder="e.g. www.instagram.com"
-                      id="soLink"
+                      id="instaLink"
                       cols={2}
+                      value={formData.instagram.link}
                     />
                   </div>
                 </div>
