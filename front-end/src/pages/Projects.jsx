@@ -281,6 +281,7 @@ export default function Projects() {
                   </button>
                 </div>
               </div>
+               {error && <p className="text-red-700">{error}</p>}
             </form>
           </div>
         )}
