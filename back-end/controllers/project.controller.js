@@ -52,3 +52,15 @@ export const updateProject = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getProject = async (req, res, next) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return next(errorHandler(404, "project not found"));
+    }
+    res.status(200).json(project);
+  } catch (error) {
+    next(error);
+  }
+}
