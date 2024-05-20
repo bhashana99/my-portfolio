@@ -1,5 +1,5 @@
 import express from 'express';
-import { createProject , getProjects,deleteProject} from '../controllers/project.controller.js';
+import { createProject , getProjects,deleteProject,updateProject} from '../controllers/project.controller.js';
 
 
 const router = express.Router();
@@ -7,5 +7,7 @@ const router = express.Router();
 router.post('/create-project',createProject);
 router.get('/get-projects',getProjects);
 router.delete('/delete-project/:id',deleteProject);
+router.post('/update-project/:id',updateProject);
+
 
 export default router;
