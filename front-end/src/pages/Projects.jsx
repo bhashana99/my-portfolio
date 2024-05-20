@@ -105,7 +105,7 @@ export default function Projects() {
       if (formData.imageUrls.length < 1) {
         return setError("You need to upload at least one image");
       }
-     
+
       const res = await fetch("/api/project/create-project", {
         method: "POST",
         headers: {
@@ -117,7 +117,7 @@ export default function Projects() {
       setLoading(false);
       if (data.success === false) {
         setError(data.message);
-      }else {
+      } else {
         window.location.reload();
       }
     } catch (error) {
@@ -126,28 +126,42 @@ export default function Projects() {
     }
   };
 
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch("/api/project/get-projects");
+        const data = await res.json();
+        if (data.success === false) {
+          setShowProjectError(data.message);
+        } else {
+          setProjects(data);
+        }
+      } catch (error) {
+        setShowProjectError(true);
+        console.log(showProjectError);
+      }
+    };
 
-useEffect(() => {
-  const fetchProjects = async () => {
+    fetchProjects();
+  }, []);
+
+  const handleDeleteProject = async (projectId) => {
     try {
-      const res = await fetch("/api/project/get-projects");
+      const res = await fetch(`/api/project/delete-project/${projectId}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if(data.success === false){
-        setShowProjectError(data.message);
-      }else{
-        setProjects(data);
+        console.log(data.message);
+        return;
       }
+      setLoading(false);
+      window.location.reload();
     } catch (error) {
-      setShowProjectError(true);
-      console.log(showProjectError);
+      setError(error.message);
+      setLoading(false);
     }
-  }
-
-  fetchProjects();
-}, []);
- 
-
-  
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
@@ -261,7 +275,6 @@ useEffect(() => {
                 <div>
                   <button
                     disabled={loading || uploading}
-                   
                     className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                   >
                     {loading ? "Creating..." : "Add Project"}
@@ -272,28 +285,29 @@ useEffect(() => {
           </div>
         )}
         {!showForm && projects && projects.length > 0 && (
-  <div className="mt-5">
-    <h2 className="font-semibold text-xl md:ml-10">Recent Projects</h2>
-    {projects.map((project) => (
-      <div key={project._id} className="mt-5 border rounded-lg p-3 flex justify-between items-center gap-4">
-        <img
-          src={project.imageUrls[0]}
-          alt="project cover"
-          className="h-16 w-16 object-contain "
-        />
-        <p>{project.projectName}</p> 
+          <div className="mt-5">
+            <h2 className="font-semibold text-xl md:ml-10">Recent Projects</h2>
+            {projects.map((project) => (
+              <div
+                key={project._id}
+                className="mt-5 border rounded-lg p-3 flex justify-between items-center gap-4"
+              >
+                <img
+                  src={project.imageUrls[0]}
+                  alt="project cover"
+                  className="h-16 w-16 object-contain "
+                />
+                <p>{project.projectName}</p>
 
-        <div className="flex flex-col items-center">
-            <button  className="text-red-700 uppercase">delete</button>
-            
-              <button className="text-green-700 uppercase">edit</button>
-            
-            
+                <div className="flex flex-col items-center">
+                  <button onClick={()=>{handleDeleteProject(project._id)}} className="text-red-700 uppercase">delete</button>
+
+                  <button className="text-green-700 uppercase">edit</button>
+                </div>
+              </div>
+            ))}
           </div>
-      </div>
-    ))}
-  </div>
-)}
+        )}
       </div>
     </div>
   );
