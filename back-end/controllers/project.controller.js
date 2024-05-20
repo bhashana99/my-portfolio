@@ -8,3 +8,16 @@ export const createProject = async (req, res, next) => {
         next(error);
     }
 }
+
+export const getProjects = async (req, res, next) => {
+    try {
+        const projects = await Project.find();
+        if(!projects){
+            return res.status(404).json({message: "Projects not found!"});
+        }
+        return res.status(200).json(projects);
+
+    } catch (error) {
+        next(error);
+    }
+}
