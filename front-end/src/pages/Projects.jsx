@@ -8,6 +8,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase.js";
+import { Link } from "react-router-dom";
 
 export default function Projects() {
   const [showForm, setShowForm] = useState(false);
@@ -303,7 +304,9 @@ export default function Projects() {
                 <div className="flex flex-col items-center">
                   <button onClick={()=>{handleDeleteProject(project._id)}} className="text-red-700 uppercase">delete</button>
 
+                <Link to={`/edit-project/${project._id}`} >
                   <button className="text-green-700 uppercase">edit</button>
+                  </Link>
                 </div>
               </div>
             ))}

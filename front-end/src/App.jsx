@@ -30,7 +30,7 @@ export default function App() {
           <Route path="/experience" element={<Experience />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/setting" element={<Setting />} />
-          <Route path="/edit-project" element={<EditProject />} />
+          <Route path="/edit-project/:projectId" element={<EditProject />} />
         </Route>
       </Routes>
     </BrowserRouter>
