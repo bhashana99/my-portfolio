@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
 import {
@@ -16,6 +16,8 @@ export default function Projects() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [showProjectError, setShowProjectError] = useState(false);
 
   const [formData, setFormData] = useState({
     projectName: "",
@@ -125,7 +127,24 @@ export default function Projects() {
   };
 
 
+useEffect(() => {
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch("/api/project/get-projects");
+      const data = await res.json();
+      if(data.success === false){
+        setShowProjectError(data.message);
+      }else{
+        setProjects(data);
+      }
+    } catch (error) {
+      setShowProjectError(true);
+      console.log(showProjectError);
+    }
+  }
 
+  fetchProjects();
+}, []);
  
 
   
@@ -252,11 +271,29 @@ export default function Projects() {
             </form>
           </div>
         )}
-        {!showForm && (
-          <div className="mt-5">
-            <h2 className="font-semibold text-xl md:ml-10">Recent Projects</h2>
+        {!showForm && projects && projects.length > 0 && (
+  <div className="mt-5">
+    <h2 className="font-semibold text-xl md:ml-10">Recent Projects</h2>
+    {projects.map((project) => (
+      <div key={project._id} className="mt-5 border rounded-lg p-3 flex justify-between items-center gap-4">
+        <img
+          src={project.imageUrls[0]}
+          alt="project cover"
+          className="h-16 w-16 object-contain "
+        />
+        <p>{project.projectName}</p> 
+
+        <div className="flex flex-col items-center">
+            <button  className="text-red-700 uppercase">delete</button>
+            
+              <button className="text-green-700 uppercase">edit</button>
+            
+            
           </div>
-        )}
+      </div>
+    ))}
+  </div>
+)}
       </div>
     </div>
   );
