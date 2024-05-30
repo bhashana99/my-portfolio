@@ -5,14 +5,55 @@ import { FaPlus } from "react-icons/fa";
 export default function Certificate() {
   const [showForm, setShowForm] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    issuingOrganization: "",
+    issueDate: "",
+    expirationDate: "",
+    credentialId: "",
+    credentialUrl: "",
+  });
+
   const toggleForm = () => {
     setShowForm(!showForm);
   };
 
-  const handleAddButton = () => {
-    setShowForm(!showForm);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+    
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(false);
+    try {
+      const res = await fetch("/api/certificate/create-certificate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+      } else {
+        window.location.reload();
+      }
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+    }
+  };
+  
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
@@ -36,29 +77,34 @@ export default function Certificate() {
         </div>
         {showForm && (
           <div className="mt-5">
-            <form className="mt-5">
+            <form className="mt-5" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-2 mt-5">
-                <label htmlFor="certificateName">
+                <label htmlFor="name">
                   Name<span className="text-red-600 text-2xl">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. AWS Cloud Practitioner Essentials"
-                  id="certificateName"
+                  id="name"
                   className="p-1"
                   required
+                  value={formData.name}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5">
-                <label htmlFor="issueOrganization">
-                Issuing organization <span className="text-red-600 text-2xl">*</span>
+                <label htmlFor="issuingOrganization">
+                  Issuing organization{" "}
+                  <span className="text-red-600 text-2xl">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. Amazon Web Services (AWS)"
-                  id="issueOrganization"
+                  id="issuingOrganization"
                   className="p-1"
                   required
+                  value={formData.issuingOrganization}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-row gap-5">
@@ -71,17 +117,21 @@ export default function Certificate() {
                     id="issueDate"
                     className="p-1"
                     required
+                    onChange={handleChange}
+                    value={formData.issueDate}
                   />
                 </div>
                 <div className="flex flex-col gap-2 mt-5">
                   <label htmlFor="expirationDate">
-                  Expiration date<span className="text-gray-300 text-2xl ">*</span>
+                    Expiration date
+                    <span className="text-gray-300 text-2xl ">*</span>
                   </label>
                   <input
                     type="month"
                     id="expirationDate"
                     className="p-1"
-                    
+                    onChange={handleChange}
+                    value={formData.expirationDate}
                   />
                 </div>
               </div>
@@ -91,7 +141,8 @@ export default function Certificate() {
                   type="text"
                   id="credentialId"
                   className="p-1"
-                 
+                  onChange={handleChange}
+                  value={formData.credentialId}
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5">
@@ -101,6 +152,8 @@ export default function Certificate() {
                   type="text"
                   id="credentialUrl"
                   className="p-1"
+                  onChange={handleChange}
+                  value={formData.credentialUrl}
                 />
               </div>
               <div className="flex flex-row gap-2 justify-end">
@@ -113,14 +166,12 @@ export default function Certificate() {
                   </button>
                 </div>
                 <div>
-                  <button
-                    onClick={handleAddButton}
-                    className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-                  >
-                    ADD
+                  <button disabled={loading} className="mt-5 p-3 px-16 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+                    {loading ? "Adding..." : "Add"}
                   </button>
                 </div>
               </div>
+              {error && <p className="text-red-700">{error}</p>}
             </form>
           </div>
         )}
