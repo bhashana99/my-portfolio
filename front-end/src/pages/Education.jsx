@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
-import { set } from "mongoose";
+import { Link } from "react-router-dom";
 
 export default function Education() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [educations, setEducations] = useState([]);
+  const [showEducationsError, setShowEducationsError] = useState(false);
 
   const [formData, setFormData] = useState({
     school: "",
@@ -54,6 +56,24 @@ export default function Education() {
       setLoading(false);
     }
   };
+
+useEffect(() => {
+    const fetchEducations = async () => {
+      try {
+        const res = await fetch("/api/education/get-educations");
+        const data = await res.json();
+        if (data.success === false) {
+          setShowEducationsError(data.message);
+        } else {
+          setEducations(data);
+        }
+      } catch (error) {
+        setShowEducationsError(true);
+        console.log(showEducationsError);
+      }
+    };
+    fetchEducations();
+}, []);
 
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
@@ -181,11 +201,35 @@ export default function Education() {
             </form>
           </div>
         )}
-        {!showForm && (
+        {!showForm && educations && educations.length > 0 && (
           <div className="mt-5">
             <h2 className="font-semibold text-xl md:ml-10">
               Education History
             </h2>
+            {educations.map((education) => (
+              <div
+              key={education._id}
+              className="mt-5 border rounded-lg p-3 flex justify-between items-center gap-4"
+            >
+              <div>
+              <p className="text-2xl font-bold">{education.school}</p>
+              <p className="font-semibold">{education.degreeName}</p>
+              {education.gpa && <p>GPA: <span className="text-red-400">{education.gpa}</span></p>}
+              
+              
+              <p>{new Date(education.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })} - {new Date(education.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
+              <p className="my-3">{education.description}</p>
+   </div>
+              
+              <div className="flex flex-col items-center">
+                <button  className="text-red-700 uppercase">delete</button>
+
+              <Link  >
+                <button className="text-green-700 uppercase">edit</button>
+                </Link>
+              </div>
+            </div>
+            ))}
           </div>
         )}
       </div>
