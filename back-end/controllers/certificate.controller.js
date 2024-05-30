@@ -48,3 +48,21 @@ export const getCertificate = async (req, res, next) => {
         next(error)
     }
 }
+
+export const updateCertificate = async (req, res, next) => {
+    const certificate = await Certificate.findById(req.params.id);
+    if (!certificate) {
+        return next(errorHandler(404, "Certificate not found"));
+    }
+
+    try {
+        const updatedCertificate = await Certificate.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        res.status(200).json(updatedCertificate);
+    } catch (error) {
+        next(error);
+    }
+}
