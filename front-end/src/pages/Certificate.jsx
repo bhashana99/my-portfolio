@@ -72,6 +72,26 @@ export default function Certificate() {
     fetchCertificates();
   }, []);
 
+  const handleDeleteCertificate = async (id) => {
+    try {
+      const res = await fetch(`/api/certificate/delete-certificate/${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        
+      } else {
+        setLoading(false)
+        window.location.reload();
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+     
+    }
+  }
+
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
@@ -218,7 +238,9 @@ export default function Certificate() {
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <button className="text-red-700 uppercase">delete</button>
+                  <button 
+                  onClick={() => handleDeleteCertificate(certificate._id)}
+                  className="text-red-700 uppercase">delete</button>
 
                   <Link>
                     <button className="text-green-700 uppercase">edit</button>
