@@ -242,7 +242,7 @@ export default function Certificate() {
                   onClick={() => handleDeleteCertificate(certificate._id)}
                   className="text-red-700 uppercase">delete</button>
 
-                  <Link>
+                  <Link to={`/edit-certificate/${certificate._id}`}>
                     <button className="text-green-700 uppercase">edit</button>
                   </Link>
                 </div>
