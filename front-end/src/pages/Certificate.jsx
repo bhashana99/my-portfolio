@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Certificate() {
   const [showForm, setShowForm] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
+  const [certificates, setCertificates] = useState([]);
+  const [showCertificatesError, setShowCertificatesError] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     issuingOrganization: "",
     issueDate: "",
-    expirationDate: "",
     credentialId: "",
     credentialUrl: "",
   });
@@ -26,7 +27,6 @@ export default function Certificate() {
       ...formData,
       [e.target.id]: e.target.value,
     });
-    
   };
 
   const handleSubmit = async (e) => {
@@ -53,7 +53,25 @@ export default function Certificate() {
       setLoading(false);
     }
   };
-  
+
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const res = await fetch("/api/certificate/get-certificates");
+        const data = await res.json();
+        if (data.success === false) {
+          setShowCertificatesError(data.message);
+        } else {
+          setCertificates(data);
+        }
+      } catch (error) {
+        setShowCertificatesError(true);
+        console.log(showEducationsError);
+      }
+    };
+    fetchCertificates();
+  }, []);
+
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
@@ -121,19 +139,6 @@ export default function Certificate() {
                     value={formData.issueDate}
                   />
                 </div>
-                <div className="flex flex-col gap-2 mt-5">
-                  <label htmlFor="expirationDate">
-                    Expiration date
-                    <span className="text-gray-300 text-2xl ">*</span>
-                  </label>
-                  <input
-                    type="month"
-                    id="expirationDate"
-                    className="p-1"
-                    onChange={handleChange}
-                    value={formData.expirationDate}
-                  />
-                </div>
               </div>
               <div className="flex flex-col gap-2 mt-5">
                 <label htmlFor="credentialId">Credential ID</label>
@@ -166,7 +171,10 @@ export default function Certificate() {
                   </button>
                 </div>
                 <div>
-                  <button disabled={loading} className="mt-5 p-3 px-16 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+                  <button
+                    disabled={loading}
+                    className="mt-5 p-3 px-16 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                  >
                     {loading ? "Adding..." : "Add"}
                   </button>
                 </div>
@@ -175,11 +183,49 @@ export default function Certificate() {
             </form>
           </div>
         )}
-        {!showForm && (
+        {!showForm && certificates && certificates.length > 0 && (
           <div className="mt-5">
             <h2 className="font-semibold text-xl md:ml-10">
               Recent Add Certificates
             </h2>
+            {certificates.map((certificate) => (
+              <div
+                key={certificate._id}
+                className="mt-5 border rounded-lg p-3 flex justify-between items-center gap-4"
+              >
+                <div>
+                  <p className="text-2xl font-bold">{certificate.name}</p>
+                  <p className="font-semibold">
+                    {certificate.issuingOrganization}
+                  </p>
+                  {certificate.credentialId && (
+                    <p>Credential ID
+                       <span className="text-red-400">{certificate.credentialId}</span>
+                    </p>
+                  )}
+
+                  <p>
+                    {new Date(certificate.issueDate).toLocaleDateString(
+                      "en-US",
+                      { year: "numeric", month: "long" }
+                    )}{" "}
+                  </p>
+                  {certificate.credentialUrl && (
+                    <Link to={certificate.credentialUrl} >
+                      <p className="text-blue-400 underline">View Certificate</p>
+                      </Link>
+                  )}
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <button className="text-red-700 uppercase">delete</button>
+
+                  <Link>
+                    <button className="text-green-700 uppercase">edit</button>
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
