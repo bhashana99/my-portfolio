@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 
 export default function EditEducation() {
   const [showForm, setShowForm] = useState(false);
@@ -11,6 +11,7 @@ export default function EditEducation() {
   const [isFormChanged, setIsFormChanged] = useState(false);
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     school: "",
@@ -60,7 +61,33 @@ export default function EditEducation() {
     });
   };
 
-  const handleSubmit = async (e) => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(false);
+
+    try {
+      const res = await fetch(`/api/education/update-education/${params.educationId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+    
+      })
+
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+      } else {
+        navigate("/education");
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
@@ -145,7 +172,7 @@ export default function EditEducation() {
             </div>
             <div className="flex flex-col gap-2 mt-5">
               <label htmlFor="description">Description</label>
-              <textarea rows={4} type="text" id="description" className="p-1" />
+              <textarea rows={4} type="text" id="description" className="p-1" value={formData.description} onChange={handleChange} />
             </div>
             <div className="flex flex-row gap-2 justify-end">
               <div>
@@ -157,8 +184,10 @@ export default function EditEducation() {
               </div>
               <div>
                 <button
-                  disabled={loading}
-                  className="mt-5 p-3 px-16 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                  disabled={loading || !isFormChanged}
+                  className={`mt-5 p-3 px-16 bg-blue-700 w-full text-white rounded-lg uppercase hover:opacity-95 ${
+                    !isFormChanged ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   {loading ? "Editing..." : "Edit"}
                 </button>
