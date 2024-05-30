@@ -219,7 +219,7 @@ export default function Certificate() {
                     {certificate.issuingOrganization}
                   </p>
                   {certificate.credentialId && (
-                    <p>Credential ID
+                    <p>Credential ID {" "}
                        <span className="text-red-400">{certificate.credentialId}</span>
                     </p>
                   )}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import { FaPlus } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function Certificate() {
@@ -29,9 +28,7 @@ export default function Certificate() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
+  
 
   useEffect(() => {
     const fetchCertificate = async () => {
@@ -61,6 +58,33 @@ export default function Certificate() {
     setIsFormChanged(hasFormChanged);
   }, [formData, initialFormData]);
 
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(false);
+
+    try {
+      const res = await fetch(`/api/certificate/update-certificate/${params.certificateId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+    
+      })
+
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+      } else {
+        navigate("/certificate");
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">

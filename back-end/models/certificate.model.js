@@ -15,7 +15,7 @@ const certificateSchema = new mongoose.Schema({
         required:true
     },
     
-    credentialID:{
+    credentialId:{
         type:String
     },
     credentialUrl:{
