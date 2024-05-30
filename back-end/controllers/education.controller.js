@@ -34,3 +34,15 @@ export const deleteEducation = async (req, res, next) => {
         next(error);
     }
 }
+
+export const getEducation = async (req, res, next) => {
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) {
+            return next(errorHandler(404, "education not found"));
+        }
+        return res.status(200).json(education);
+    } catch (error) {
+        next(error);
+    }
+}
