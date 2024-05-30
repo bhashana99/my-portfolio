@@ -46,3 +46,21 @@ export const getEducation = async (req, res, next) => {
         next(error);
     }
 }
+
+export const updateEducation = async (req, res, next) => {
+    const education = await Education.findById(req.params.id);
+    if (!education) {
+        return next(errorHandler(404, "education not found"));
+    }
+
+    try {
+        const updatedEducation = await Education.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        res.status(200).json(updatedEducation);
+    } catch (error) {
+        next(error);
+    }
+}
