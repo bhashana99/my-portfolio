@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Setting from "./pages/Setting";
 import PrivateRoute from "./components/PrivateRoute";
 import EditProject from "./pages/EditProject";
+import EditEducation from "./pages/EditEducation";
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/setting" element={<Setting />} />
           <Route path="/edit-project/:projectId" element={<EditProject />} />
+          <Route path="/edit-education/:educationId" element={<EditEducation />} />
         </Route>
       </Routes>
     </BrowserRouter>

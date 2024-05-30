@@ -245,7 +245,7 @@ const handleDeleteEducation = async (id) => {
               <div className="flex flex-col items-center">
                 <button onClick={()=>{handleDeleteEducation(education._id)}}  className="text-red-700 uppercase">delete</button>
 
-              <Link  >
+              <Link to={`/edit-education/${education._id}`} >
                 <button className="text-green-700 uppercase">edit</button>
                 </Link>
               </div>
