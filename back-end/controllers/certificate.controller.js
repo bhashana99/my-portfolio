@@ -8,3 +8,15 @@ export const createCertificate = async (req, res, next) => {
         next(error);
     }
 }
+
+export const getCertificates = async (req, res, next) => {
+    try {
+        const certificates = await Certificate.find();
+        if (!certificates) {
+            return res.status(404).json({ message: "Certificates not found!" });
+        }
+        return res.status(200).json(certificates);
+    } catch (error) {
+        next(error);
+    }
+}
