@@ -75,6 +75,26 @@ useEffect(() => {
     fetchEducations();
 }, []);
 
+const handleDeleteEducation = async (id) => {
+    try {
+      const res = await fetch(`/api/education/delete-education/${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        
+      } else {
+        setLoading(false)
+        window.location.reload();
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+     
+    }
+}
+
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
@@ -198,6 +218,7 @@ useEffect(() => {
                   </button>
                 </div>
               </div>
+              {error && <p className="text-red-700">{error}</p>}
             </form>
           </div>
         )}
@@ -222,7 +243,7 @@ useEffect(() => {
    </div>
               
               <div className="flex flex-col items-center">
-                <button  className="text-red-700 uppercase">delete</button>
+                <button onClick={()=>{handleDeleteEducation(education._id)}}  className="text-red-700 uppercase">delete</button>
 
               <Link  >
                 <button className="text-green-700 uppercase">edit</button>
