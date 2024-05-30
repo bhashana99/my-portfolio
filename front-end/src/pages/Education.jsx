@@ -1,16 +1,58 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
+import { set } from "mongoose";
 
 export default function Education() {
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [formData, setFormData] = useState({
+    school: "",
+    degreeName: "",
+    startDate: "",
+    endDate: "",
+    gpa: "",
+    description: "",
+  });
 
   const toggleForm = () => {
     setShowForm(!showForm);
   };
 
-  const handleAddButton = () => {
-    setShowForm(!showForm);
+
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(false);
+    try {
+      const res = await fetch("/api/education/create-education", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+      } else {
+        window.location.reload();
+      }
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,17 +78,19 @@ export default function Education() {
         </div>
         {showForm && (
           <div className="mt-5">
-            <form className="mt-5">
+            <form className="mt-5" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-2 mt-5">
-                <label htmlFor="schoolName">
+                <label htmlFor="school">
                   School<span className="text-red-600 text-2xl">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. University of Colombo"
-                  id="schoolName"
+                  id="school"
                   className="p-1"
                   required
+                  onChange={handleChange}
+                  value={formData.school}
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5">
@@ -59,29 +103,35 @@ export default function Education() {
                   id="degreeName"
                   className="p-1"
                   required
+                  value={formData.degreeName}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-row gap-5">
                 <div className="flex flex-col gap-2 mt-5">
-                  <label htmlFor="degreeStartDate">
+                  <label htmlFor="startDate">
                     Start Date<span className="text-red-600 text-2xl">*</span>
                   </label>
                   <input
                     type="month"
-                    id="degreeStartDate"
+                    id="startDate"
                     className="p-1"
                     required
+                    value={formData.startDate}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex flex-col gap-2 mt-5">
-                  <label htmlFor="degreeEndDate">
+                  <label htmlFor="endDate">
                     End Date<span className="text-red-600 text-2xl">*</span>
                   </label>
                   <input
                     type="month"
-                    id="degreeEndDate"
+                    id="endDate"
                     className="p-1"
                     required
+                    value={formData.endDate}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -95,15 +145,19 @@ export default function Education() {
                   max="4.00"
                   defaultValue={3.54}
                   step="0.01"
+                  value={formData.gpa}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5">
-                <label htmlFor="educationDescription">Description</label>
+                <label htmlFor="description">Description</label>
                 <textarea
                   rows={4}
                   type="text"
-                  id="educationDescription"
+                  id="description"
                   className="p-1"
+                  value={formData.description}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-row gap-2 justify-end">
@@ -117,10 +171,10 @@ export default function Education() {
                 </div>
                 <div>
                   <button
-                    onClick={handleAddButton}
-                    className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+                  disabled={loading}
+                  className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                   >
-                    ADD
+                    {loading ? "Creating..." : "Add Education"}
                   </button>
                 </div>
               </div>
@@ -129,7 +183,9 @@ export default function Education() {
         )}
         {!showForm && (
           <div className="mt-5">
-            <h2 className="font-semibold text-xl md:ml-10">Education History</h2>
+            <h2 className="font-semibold text-xl md:ml-10">
+              Education History
+            </h2>
           </div>
         )}
       </div>
