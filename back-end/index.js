@@ -6,6 +6,7 @@ import basicInfoRouter from "./routes/basicInfo.route.js";
 import socialMediaRouter from "./routes/socialMedia.route.js";
 import contactInfoRouter from "./routes/contact.route.js";
 import projectRouter from "./routes/project.route.js";
+import educationRouter from "./routes/education.route.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api/basicInfo", basicInfoRouter);
 app.use("/api/socialMedia", socialMediaRouter);
 app.use("/api/contactInfo", contactInfoRouter);
 app.use("/api/project",projectRouter);
+app.use("/api/education",educationRouter);
 
 
 app.use((err, req, res, next) => {
