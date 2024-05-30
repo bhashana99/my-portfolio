@@ -34,3 +34,17 @@ export const deleteCertificate = async (req, res, next) => {
      next(error);   
     }
 }
+
+export const getCertificate = async (req, res, next) => {
+    try {
+        const certificate = await Certificate.findById(req.params.id);
+        if (!certificate) {
+            return next(errorHandler(404, "Certificate not found"));
+        }
+
+        res.status(200).json(certificate);
+
+    } catch (error) {
+        next(error)
+    }
+}
