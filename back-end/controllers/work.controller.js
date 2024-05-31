@@ -20,3 +20,18 @@ export const getWorks = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const deleteWork = async (req, res, next) => {
+  try {
+    const work = await Work.findById(req.params.id);
+    if (!work) {
+      return res.status(404).json({ message: "Work not found!" });
+    }
+
+    await Work.findByIdAndDelete(req.params.id);
+    return res.status(200).json({ message: "Work deleted!" });
+  } catch (error) {
+    next(error);
+  }
+}
