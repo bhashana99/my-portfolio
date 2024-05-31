@@ -5,17 +5,87 @@ import { FaPlus } from "react-icons/fa";
 export default function Experience() {
   const [showForm, setShowForm] = useState(false);
   const [isCurrentJob, setIsCurrentJob] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    employmentType: "",
+    companyName: "",
+    companyLocation: "",
+    locationType: "",
+    currentlyWorking: false,
+    startDate: "",
+    endDate: "",
+    description: "",
+  });
 
   const toggleForm = () => {
     setShowForm(!showForm);
   };
 
-  const handleAddButton = () => {
-    setShowForm(!showForm);
-  };
+  
+
+  
 
   const handleCurrentJob = (e) => {
     setIsCurrentJob(e.target.checked);
+    const { checked } = e.target;
+    setFormData({
+      ...formData,
+      currentlyWorking: checked,
+      endDate: checked ? "" : formData.endDate, 
+    });
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleValidation = () => {
+    const today = new Date().toISOString().split("T")[0]; 
+    if (formData.startDate > today) {
+      return "Start date cannot be a future date.";
+    }
+    if (!formData.currentlyWorking && (formData.endDate > today || formData.endDate < formData.startDate)) {
+      return "End date cannot be a future date or before the start date.";
+    }
+    return null;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validationError = handleValidation();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setLoading(true);
+    setError(false);
+    try {
+      const res = await fetch("/api/work/create-work", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+      } else {
+        window.location.reload();
+      }
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,17 +111,19 @@ export default function Experience() {
         </div>
         {showForm && (
           <div className="mt-5">
-            <form className="mt-5">
+            <form className="mt-5" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-2 mt-5">
-                <label htmlFor="jobTitle">
+                <label htmlFor="title">
                   Title<span className="text-red-600 text-2xl">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. Software Engineer"
-                  id="jobTitle"
+                  id="title"
                   className="p-1"
                   required
+                  value={formData.title}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5">
@@ -59,7 +131,12 @@ export default function Experience() {
                   Employment type
                   <span className="text-red-600 text-2xl">*</span>
                 </label>
-                <select className="p-1" id="employmentType">
+                <select
+                  className="p-1"
+                  id="employmentType"
+                  onChange={handleChange}
+                  value={formData.employmentType}
+                >
                   <option value="">Please select</option>
                   <option value="fullTime">Full-time </option>
                   <option value="partTime">Part-time</option>
@@ -81,6 +158,8 @@ export default function Experience() {
                   id="companyName"
                   className="p-1"
                   required
+                  value={formData.companyName}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5">
@@ -94,13 +173,20 @@ export default function Experience() {
                   id="companyLocation"
                   className="p-1"
                   required
+                  value={formData.companyLocation}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-col gap-2 mt-5">
-                <label htmlFor="companyLocation">
+                <label htmlFor="locationType">
                   Location Type<span className="text-red-600 text-2xl">*</span>
                 </label>
-                <select className="p-1" id="companyLocation">
+                <select
+                  className="p-1"
+                  id="locationType"
+                  value={formData.locationType}
+                  onChange={handleChange}
+                >
                   <option value="">Please select</option>
                   <option value="remote">Remote</option>
                   <option value="onsite">On-site</option>
@@ -115,6 +201,7 @@ export default function Experience() {
                     id="currentJob"
                     className="h-4 w-4"
                     onChange={handleCurrentJob}
+                    checked={formData.currentlyWorking}
                   />
                   <label htmlFor="currentJob">
                     I am currently working in this role
@@ -123,40 +210,47 @@ export default function Experience() {
               </div>
               <div className="flex flex-row gap-5">
                 <div className="flex flex-col gap-2 mt-5">
-                  <label htmlFor="jobStartDate">
+                  <label htmlFor="startDate">
                     Start Date<span className="text-red-600 text-2xl">*</span>
                   </label>
                   <input
                     type="month"
-                    id="jobStartDate"
+                    id="startDate"
                     className="p-1"
                     required
+                    value={formData.startDate}
+                    onChange={handleChange}
                   />
                 </div>
                 {!isCurrentJob && (
                   <div className="flex flex-col gap-2 mt-5">
-                    <label htmlFor="jobEndDate">
+                    <label htmlFor="endDate">
                       End Date<span className="text-red-600 text-2xl">*</span>
                     </label>
                     <input
                       type="month"
-                      id="jobEndDate"
+                      id="endDate"
                       className="p-1"
-                      required
+                      required={!currentlyWorking}
+                      value={formData.endDate}
+                      onChange={handleChange}
                     />
                   </div>
                 )}
               </div>
 
               <div className="flex flex-col gap-2 mt-5">
-                <label htmlFor="jobDescription">Description</label>
+                <label htmlFor="description">Description</label>
                 <textarea
                   rows={4}
                   type="text"
-                  id="jobDescription"
+                  id="description"
                   className="p-1"
+                  value={formData.description}
+                  onChange={handleChange}
                 />
               </div>
+              {error && <p className="text-red-700">{error}</p>}
               <div className="flex flex-row gap-2 justify-end">
                 <div>
                   <button
@@ -168,13 +262,14 @@ export default function Experience() {
                 </div>
                 <div>
                   <button
-                    onClick={handleAddButton}
+                  disabled={loading}
                     className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                   >
-                    ADD
+                    {loading ? "Creating..." : "Add Experience"}
                   </button>
                 </div>
               </div>
+              
             </form>
           </div>
         )}
