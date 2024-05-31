@@ -1,15 +1,21 @@
 import React, { useState,useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom"; 
+import { Link,useNavigate,useParams } from "react-router-dom"; 
 
 export default function Experience() {
   const [showForm, setShowForm] = useState(false);
   const [isCurrentJob, setIsCurrentJob] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [works, setWorks] = useState([]);
-  const [showWorksError, setShowWorksError] = useState(false);
+  
+
+  const [initialFormData, setInitialFormData] = useState({});
+  const [isFormChanged, setIsFormChanged] = useState(false);
+
+  const params = useParams();
+  const navigate = useNavigate();
+
 
   const [formData, setFormData] = useState({
     title: "",
@@ -26,6 +32,28 @@ export default function Experience() {
   const toggleForm = () => {
     setShowForm(!showForm);
   };
+
+  useEffect(() => {
+    const fetchWork = async () => {
+      const Id = params.workId;
+      const res = await fetch(`/api/work/get-work/${Id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+      const formattedData = {
+        ...data,
+        startDate: new Date(data.startDate).toISOString().substring(0, 7),
+        endDate: new Date(data.endDate).toISOString().substring(0, 7),
+      };
+
+      setFormData(formattedData);
+      setInitialFormData(formattedData);
+    };
+
+    fetchWork();
+  }, [params.workId]);
 
   const handleCurrentJob = (e) => {
     setIsCurrentJob(e.target.checked);
@@ -70,64 +98,16 @@ export default function Experience() {
     setLoading(true);
     setError(false);
     try {
-      const res = await fetch("/api/work/create-work", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      setLoading(false);
-      if (data.success === false) {
-        setError(data.message);
-      } else {
-        window.location.reload();
-      }
+      
     } catch (error) {
       setError(true);
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    const fetchWorks = async () => {
-      try {
-        const res = await fetch("/api/work/get-works");
-        const data = await res.json();
-        if (data.success === false) {
-          setShowWorksError(data.message);
-        } else {
-          setWorks(data);
-        }
-      } catch (error) {
-        setShowWorksError(true);
-        console.log(showWorksError);
-      }
-    };
-    fetchWorks();
-  }, []);
+ 
 
-  const handleDeleteWork = async (WorkId) => {
-    try {
-      const res = await fetch(`/api/work/delete-work/${WorkId}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      if (data.success === false) {
-        console.log(data.message);
-        
-      } else {
-        setLoading(false)
-        window.location.reload();
-      }
-    } catch (error) {
-      setError(error.message);
-      setLoading(false);
-     
-    }
-}
-
+ 
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
@@ -136,20 +116,10 @@ export default function Experience() {
       </div>
       <div className="p-5 flex-1 md:ml-52">
         <h1 className="text-center justify-center text-xl md:text-3xl font-bold ">
-          Work Experience
+          Edit Work Experience
         </h1>
-        <div className="mt-5">
-          {!showForm && (
-            <div
-              onClick={toggleForm}
-              className="max-w-72 flex flex-row gap-5 border-dashed border-2 border-indigo-600 p-2  justify-center mx-auto hover:border-green-600 cursor-pointer "
-            >
-              <FaPlus className="text-2xl text-blue-600 " />
-              <h3>Add New Experience</h3>
-            </div>
-          )}
-        </div>
-        {showForm && (
+        
+    
           <div className="mt-5">
             <form className="mt-5" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-2 mt-5">
@@ -293,71 +263,28 @@ export default function Experience() {
               {error && <p className="text-red-700">{error}</p>}
               <div className="flex flex-row gap-2 justify-end">
                 <div>
+                    <Link to="/experience" >
                   <button
-                    onClick={toggleForm}
+                    
                     className="mt-5 p-3 bg-white border-black w-full text-black rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                   >
                     Back
                   </button>
+                  </Link>
                 </div>
                 <div>
                   <button
                     disabled={loading}
                     className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                   >
-                    {loading ? "Creating..." : "Add Experience"}
+                    {loading ? "Updating..." : "Edit Experience"}
                   </button>
                 </div>
               </div>
             </form>
           </div>
-        )}
-        {!showForm && works && works.length > 0 && (
-          <div className="mt-5">
-            <h2 className="font-semibold text-xl md:ml-10">
-              Recent Add Experience
-            </h2>
-            {works.map((work) => (
-              <div
-                key={work._id}
-                className="mt-5 border rounded-lg p-3 flex justify-between items-center gap-4"
-              >
-                <div>
-                  <p className="text-2xl font-bold">{work.name}</p>
-                  <p className="font-semibold">{work.companyName}</p>
-
-                  <p>
-                    {new Date(work.startDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                    })}{" "}
-                    -{" "}
-                    {work.currentlyWorking
-                      ? "Present"
-                      : new Date(work.endDate).toLocaleDateString(
-                          "en-US",
-                          { year: "numeric", month: "long" }
-                        )}{" "}
-                  </p>
-                  <p className="my-3">{work.employmentType}</p>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <button
-                   onClick={()=>{handleDeleteWork(work._id)}}
-                    className="text-red-700 uppercase"
-                  >
-                    delete
-                  </button>
-
-                  <Link to={`/edit-experience/${work._id}`}>
-                    <button className="text-green-700 uppercase">edit</button>
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        
+        
       </div>
     </div>
   );
