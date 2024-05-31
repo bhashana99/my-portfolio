@@ -21,7 +21,6 @@ export const getWorks = async (req, res, next) => {
   }
 };
 
-
 export const deleteWork = async (req, res, next) => {
   try {
     const work = await Work.findById(req.params.id);
@@ -34,7 +33,7 @@ export const deleteWork = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const getWork = async (req, res, next) => {
   try {
@@ -46,4 +45,20 @@ export const getWork = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
+
+export const updateWork = async (req, res, next) => {
+  const work = await Work.findById(req.params.id);
+  if (!work) {
+    return next(errorHandler(404, "work not found"));
+  }
+
+  try {
+    const updatedWork = await Work.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.status(200).json(updatedWork);
+  } catch (error) {
+    next(error);
+  }
+};
