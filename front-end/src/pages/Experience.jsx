@@ -271,7 +271,7 @@ export default function Experience() {
                       type="month"
                       id="endDate"
                       className="p-1"
-                      required={!currentlyWorking}
+                      required
                       value={formData.endDate}
                       onChange={handleChange}
                     />

@@ -35,3 +35,15 @@ export const deleteWork = async (req, res, next) => {
     next(error);
   }
 }
+
+export const getWork = async (req, res, next) => {
+  try {
+    const work = await Work.findById(req.params.id);
+    if (!work) {
+      return next(errorHandler(404, "work not found"));
+    }
+    return res.status(200).json(work);
+  } catch (error) {
+    next(error);
+  }
+}
