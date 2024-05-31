@@ -8,6 +8,7 @@ import contactInfoRouter from "./routes/contact.route.js";
 import projectRouter from "./routes/project.route.js";
 import educationRouter from "./routes/education.route.js";
 import certificateRouter from "./routes/certificate.route.js";
+import workRouter from "./routes/work.route.js";
 
 dotenv.config();
 
@@ -35,7 +36,7 @@ app.use("/api/contactInfo", contactInfoRouter);
 app.use("/api/project",projectRouter);
 app.use("/api/education",educationRouter);
 app.use("/api/certificate",certificateRouter);
-
+app.use("/api/work",workRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
