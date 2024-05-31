@@ -108,6 +108,26 @@ export default function Experience() {
     fetchWorks();
   }, []);
 
+  const handleDeleteWork = async (WorkId) => {
+    try {
+      const res = await fetch(`/api/work/delete-work/${WorkId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        
+      } else {
+        setLoading(false)
+        window.location.reload();
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+     
+    }
+}
+
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* sidebar */}
@@ -324,7 +344,7 @@ export default function Experience() {
 
                 <div className="flex flex-col items-center">
                   <button
-                   
+                   onClick={()=>{handleDeleteWork(work._id)}}
                     className="text-red-700 uppercase"
                   >
                     delete
