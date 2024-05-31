@@ -65,6 +65,12 @@ export default function Experience() {
     });
   };
 
+  useEffect(() => {
+    const hasFormChanged =
+      JSON.stringify(formData) !== JSON.stringify(initialFormData);
+    setIsFormChanged(hasFormChanged);
+  }, [formData, initialFormData]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -98,7 +104,22 @@ export default function Experience() {
     setLoading(true);
     setError(false);
     try {
-      
+        const res = await fetch(`/api/work/update-work/${params.workId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        
+          })
+    
+          const data = await res.json();
+          setLoading(false);
+          if (data.success === false) {
+            setError(data.message);
+          } else {
+            navigate("/experience");
+          }
     } catch (error) {
       setError(true);
       setLoading(false);
@@ -274,9 +295,10 @@ export default function Experience() {
                 </div>
                 <div>
                   <button
-                    disabled={loading}
-                    className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-                  >
+                    disabled={loading || !isFormChanged}
+                    className={`mt-5 p-3 px-16 bg-blue-700 w-full text-white rounded-lg uppercase hover:opacity-95 ${
+                        !isFormChanged ? "opacity-50 cursor-not-allowed" : ""
+                      }`}   >
                     {loading ? "Updating..." : "Edit Experience"}
                   </button>
                 </div>
