@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom"; 
 
 export default function Experience() {
   const [showForm, setShowForm] = useState(false);
   const [isCurrentJob, setIsCurrentJob] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [works, setWorks] = useState([]);
+  const [showWorksError, setShowWorksError] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -24,17 +27,13 @@ export default function Experience() {
     setShowForm(!showForm);
   };
 
-  
-
-  
-
   const handleCurrentJob = (e) => {
     setIsCurrentJob(e.target.checked);
     const { checked } = e.target;
     setFormData({
       ...formData,
       currentlyWorking: checked,
-      endDate: checked ? "" : formData.endDate, 
+      endDate: checked ? "" : formData.endDate,
     });
   };
 
@@ -46,11 +45,14 @@ export default function Experience() {
   };
 
   const handleValidation = () => {
-    const today = new Date().toISOString().split("T")[0]; 
+    const today = new Date().toISOString().split("T")[0];
     if (formData.startDate > today) {
       return "Start date cannot be a future date.";
     }
-    if (!formData.currentlyWorking && (formData.endDate > today || formData.endDate < formData.startDate)) {
+    if (
+      !formData.currentlyWorking &&
+      (formData.endDate > today || formData.endDate < formData.startDate)
+    ) {
       return "End date cannot be a future date or before the start date.";
     }
     return null;
@@ -87,6 +89,24 @@ export default function Experience() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchWorks = async () => {
+      try {
+        const res = await fetch("/api/work/get-works");
+        const data = await res.json();
+        if (data.success === false) {
+          setShowWorksError(data.message);
+        } else {
+          setWorks(data);
+        }
+      } catch (error) {
+        setShowWorksError(true);
+        console.log(showWorksError);
+      }
+    };
+    fetchWorks();
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
@@ -262,22 +282,60 @@ export default function Experience() {
                 </div>
                 <div>
                   <button
-                  disabled={loading}
+                    disabled={loading}
                     className="mt-5 p-3 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                   >
                     {loading ? "Creating..." : "Add Experience"}
                   </button>
                 </div>
               </div>
-              
             </form>
           </div>
         )}
-        {!showForm && (
+        {!showForm && works && works.length > 0 && (
           <div className="mt-5">
             <h2 className="font-semibold text-xl md:ml-10">
               Recent Add Experience
             </h2>
+            {works.map((work) => (
+              <div
+                key={work._id}
+                className="mt-5 border rounded-lg p-3 flex justify-between items-center gap-4"
+              >
+                <div>
+                  <p className="text-2xl font-bold">{work.name}</p>
+                  <p className="font-semibold">{work.companyName}</p>
+
+                  <p>
+                    {new Date(work.startDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                    })}{" "}
+                    -{" "}
+                    {work.currentlyWorking
+                      ? "Present"
+                      : new Date(work.endDate).toLocaleDateString(
+                          "en-US",
+                          { year: "numeric", month: "long" }
+                        )}{" "}
+                  </p>
+                  <p className="my-3">{work.employmentType}</p>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <button
+                   
+                    className="text-red-700 uppercase"
+                  >
+                    delete
+                  </button>
+
+                  <Link >
+                    <button className="text-green-700 uppercase">edit</button>
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
