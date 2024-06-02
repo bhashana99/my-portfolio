@@ -5,7 +5,7 @@ import Welcome from '../components/Welcome'
 
 export default function Home() {
   return (
-    <div>
+    <div className='bg-slate-100'>
       <Welcome />
     <Footer/>
     </div>

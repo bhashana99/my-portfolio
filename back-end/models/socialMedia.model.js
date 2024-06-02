@@ -4,7 +4,7 @@ const socialMediaSchema = new mongoose.Schema({
   linkedin: {
     username: {
       type: String,
-      default:"default@56"
+      
     },
     link: {
       type: String,
@@ -14,7 +14,7 @@ const socialMediaSchema = new mongoose.Schema({
   github: {
     username: {
       type: String,
-      default:"default@56"
+      
     },
     link: {
       type: String,
@@ -24,7 +24,7 @@ const socialMediaSchema = new mongoose.Schema({
   x: {
     username: {
       type: String,
-      default:"default@56"
+      
     },
     link: {
       type: String,
@@ -34,7 +34,7 @@ const socialMediaSchema = new mongoose.Schema({
   instagram: {
     username: {
       type: String,
-      default:"default@56"
+      
     },
     link: {
       type: String,
@@ -44,7 +44,7 @@ const socialMediaSchema = new mongoose.Schema({
   medium: {
     username: {
       type: String,
-      default:"default@56"
+      
     },
     link: {
       type: String,
@@ -54,7 +54,7 @@ const socialMediaSchema = new mongoose.Schema({
   stackOverflow: {
     username: {
       type: String,
-      default:"default@56"
+      
     },
     link: {
       type: String,
