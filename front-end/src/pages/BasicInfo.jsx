@@ -188,6 +188,20 @@ export default function BasicInfo() {
                 />
               </div>
               <div className="flex flex-col gap-2 items-start my-2">
+                <label htmlFor="brandName">
+                  Brand Name <span className="text-red-600 text-2xl">*</span> (This will show top of Header)
+                </label>
+                <input
+                  type="text"
+                  
+                  className="p-1 w-full"
+                  id="brandName"
+                  required
+                  onChange={handleChange}
+                  value={formData.brandName}
+                />
+              </div>
+              <div className="flex flex-col gap-2 items-start my-2">
                 <label htmlFor="headline">
                   Headline <span className="text-red-600 text-2xl">*</span>
                 </label>

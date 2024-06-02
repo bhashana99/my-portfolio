@@ -9,6 +9,10 @@ const basicInfoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  brandName: {
+    type: String,
+    required: true,
+  },
   additionalName: {
     type: String,
   },

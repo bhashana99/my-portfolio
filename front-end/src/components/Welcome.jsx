@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FaLinkedin,FaGithubSquare,FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter,FaMedium,FaStackOverflow } from "react-icons/fa6";
 
+
 export default function Main() {
   const [basicInfo, setBasicInfo] = useState({});
   const [socialMedia, setSocialMedia] = useState({});
@@ -39,13 +40,14 @@ export default function Main() {
 
   
   return (
-    <div className="min-h-screen  flex items-center justify-center">
+    <div className="h-screen  flex items-center justify-center">
       {loading ? (
         <div className="flex items-center justify-center">
           <div className="w-16 h-16 border-4 border-t-4 border-t-transparent border-white rounded-full animate-spin"></div>
         </div>
       ) : (
         <div>
+          
           <div className="flex flex-col md:grid md:grid-cols-3 text-center ">
             <div className="flex justify-center">
               <img
@@ -57,7 +59,7 @@ export default function Main() {
             <div className="col-span-2 text-start">
               <p className="text-3xl font-semibold font-mono">Hi There,</p>
               <h1 className="mt-5 text-4xl font-bold font-mono tracking-widest">
-                {"I'm "} {basicInfo.firstName} {basicInfo.lastName}
+                {"I'm "} <span className="text-red-700 text-5xl">{basicInfo.firstName}</span>  {basicInfo.lastName}
                 {basicInfo.additionalName && (
                   <span className="text-sm">
                     {" ( "} {basicInfo.additionalName} {" ) "}
@@ -67,7 +69,7 @@ export default function Main() {
               <p className="mt-2 font-sans">{basicInfo.headline}</p>
               <p className="mt-3 text-justify md:mr-20">{basicInfo.about}</p>
               <div className="flex flex-row items-center mt-5">
-                <CiHome />
+                <CiHome className="text-2xl" />
                 <p>
                   {basicInfo.city}, {basicInfo.country}
                 </p>
