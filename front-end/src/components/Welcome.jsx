@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaLinkedin,FaGithubSquare,FaInstagram } from "react-icons/fa";
-import { FaSquareXTwitter,FaMedium,FaStackOverflow } from "react-icons/fa6";
+import { FaLinkedin, FaGithubSquare, FaInstagram } from "react-icons/fa";
+import { FaSquareXTwitter, FaMedium, FaStackOverflow } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
 
 export default function Main() {
@@ -46,7 +46,6 @@ export default function Main() {
         </div>
       ) : (
         <div>
-          
           <div className="flex flex-col md:grid md:grid-cols-3 text-center  ">
             <div className="flex justify-center">
               <img
@@ -58,7 +57,11 @@ export default function Main() {
             <div className="col-span-2 text-start">
               <p className="text-3xl font-semibold font-mono">Hi There,</p>
               <h1 className="mt-5 text-4xl font-bold font-mono tracking-widest">
-                {"I'm "} <span className="text-red-700 text-5xl">{basicInfo.firstName}</span>  {basicInfo.lastName}
+                {"I'm "}{" "}
+                <span className="text-red-700 text-5xl">
+                  {basicInfo.firstName}
+                </span>{" "}
+                {basicInfo.lastName}
                 {basicInfo.additionalName && (
                   <span className="text-sm">
                     {" ( "} {basicInfo.additionalName} {" ) "}
@@ -66,27 +69,35 @@ export default function Main() {
                 )}
               </h1>
               <p className="mt-2 font-sans">{basicInfo.headline}</p>
-              <p className="mt-3 text-justify md:mr-20  max-w-3xl tracking-wide font-light">{basicInfo.about}</p>
-              <div className="flex flex-row items-end  mt-5">
+              <p className="mt-3 text-justify italic md:mr-20  max-w-3xl tracking-wide font-light">
+                {basicInfo.about}
+              </p>
+              {/* <div className="flex flex-row items-end  mt-5">
                 <IoLocationOutline className="text-2xl text-blue-800" />
-                <p>
-                  {basicInfo.city}, <span className="font-medium text-green-800">{basicInfo.country}</span>
+                <p className="font-thin">
+                  {basicInfo.city},{" "}
+                  <span className="font-medium text-green-800">
+                    {basicInfo.country}
+                  </span>
                 </p>
-              </div>
-              <div className="mt-5">
-                <a 
-                  href=""
-                  download 
-                  className="inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
-                >
-                  Download My CV
-                </a>
-              </div>
+              </div> */}
+              {basicInfo.cvUrl && (
+                <div className="mt-10">
+                  <a
+                    href={basicInfo.cvUrl}
+                    download
+                    target="_blank"
+                    className="inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+                  >
+                    Download My CV
+                  </a>
+                </div>
+              )}
             </div>
           </div>
           <div className=" flex flex-row  justify-center gap-2 md:absolute md:bottom-10 left-1/2 transform -translate-x-1/2">
             {socialMedia.linkedin && socialMedia.linkedin.link && (
-              <a href={socialMedia.linkedin.link}  >
+              <a href={socialMedia.linkedin.link}>
                 <FaLinkedin className="text-blue-800 text-3xl" />
               </a>
             )}
@@ -95,7 +106,7 @@ export default function Main() {
                 <FaGithubSquare className="text-3xl" />
               </a>
             )}
-             {socialMedia.stackOverflow && socialMedia.stackOverflow.link && (
+            {socialMedia.stackOverflow && socialMedia.stackOverflow.link && (
               <a href={socialMedia.stackOverflow.link} target="_blank">
                 <FaStackOverflow className="text-3xl bg-orange-500 text-white" />
               </a>
@@ -110,7 +121,7 @@ export default function Main() {
                 <FaMedium className="text-3xl" />
               </a>
             )}
-           
+
             {socialMedia.instagram && socialMedia.instagram.link && (
               <a href={socialMedia.instagram.link} target="_blank">
                 <FaInstagram className="text-orange-600 text-3xl" />
