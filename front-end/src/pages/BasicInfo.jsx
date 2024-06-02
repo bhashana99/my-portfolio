@@ -14,8 +14,12 @@ import Swal from "sweetalert2";
 
 export default function BasicInfo() {
   const fileRef = useRef(null);
+  const [cvFile, setCvFile] = useState(undefined);
   const [file, setFile] = useState(undefined);
+
+  const [cvPerc, setCvPerc] = useState(0);
   const [filePerc, setFilePerc] = useState(0);
+  const [cvUploadError, setCvUploadError] = useState(false);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -38,6 +42,8 @@ export default function BasicInfo() {
     additionalName: "",
     headline: "",
     about: "",
+    brandName: "",
+    cvUrl: "",
     country: "",
     profileImage:
       "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
@@ -63,9 +69,13 @@ export default function BasicInfo() {
     fetchBasicInfo();
 
     if (file) {
-      handleImageUpload(file);
+      handleUpload(file);
     }
-  }, [file]);
+
+    if (cvFile) {
+      handleUpload(cvFile);
+    }
+  }, [file, cvFile]);
 
   useEffect(() => {
     const hasFormChanged =
@@ -73,7 +83,7 @@ export default function BasicInfo() {
     setIsFormChanged(hasFormChanged);
   }, [formData, initialFormData]);
 
-  const handleImageUpload = (file) => {
+  const handleUpload = (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, fileName);
@@ -82,28 +92,43 @@ export default function BasicInfo() {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setFilePerc(Math.round(progress));
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        if (file.type.includes("pdf")) {
+          setCvPerc(Math.round(progress));
+        } else {
+          setFilePerc(Math.round(progress));
+        }
       },
       (error) => {
-        setFileUploadError(true);
+        if (file.type.includes("pdf")) {
+          setCvUploadError(true);
+        } else {
+          setFileUploadError(true);
+        }
         console.error("Upload error:", error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((downloadURL) => {
-            setFormData({ ...formData, profileImage: downloadURL });
-            setFilePerc(0);
+            if (file.type.includes("pdf")) {
+              setFormData({ ...formData, cvUrl: downloadURL });
+              setCvPerc(0);
+            } else {
+              setFormData({ ...formData, profileImage: downloadURL });
+              setFilePerc(0);
+            }
           })
           .catch((error) => {
-            setFileUploadError(true);
+            if (file.type.includes("pdf")) {
+              setCvUploadError(true);
+            } else {
+              setFileUploadError(true);
+            }
             console.error("Download URL error:", error);
           });
       }
     );
   };
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -189,11 +214,11 @@ export default function BasicInfo() {
               </div>
               <div className="flex flex-col gap-2 items-start my-2">
                 <label htmlFor="brandName">
-                  Brand Name <span className="text-red-600 text-2xl">*</span> (This will show top of Header)
+                  Brand Name <span className="text-red-600 text-2xl">*</span>{" "}
+                  (This will show top of Header)
                 </label>
                 <input
                   type="text"
-                  
                   className="p-1 w-full"
                   id="brandName"
                   required
@@ -246,6 +271,45 @@ export default function BasicInfo() {
                   value={formData.country}
                 />
               </div>
+              <div className="flex flex-row gap-2 items-center">
+                <label htmlFor="cvUrl">Upload your CV</label>
+
+                <input
+                  onChange={(e) => setCvFile(e.target.files[0])}
+                  type="file"
+                  accept="application/pdf"
+                  className="p-1 "
+                  id="cvUrl"
+                />
+
+                <p className="text-sm self-center">
+                  {cvUploadError ? (
+                    <span className="text-red-700">
+                      Error PDF Upload (image must be less than 20 MB)
+                    </span>
+                  ) : cvPerc > 0 && cvPerc < 100 ? (
+                    <span className="text-black">Uploading {cvPerc}%</span>
+                  ) : filePerc === 100 ? (
+                    <span className="text-green-700">
+                      Cv successfully uploaded!
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </p>
+              </div>
+              {formData.cvUrl && (
+                <div className="my-5">
+                  <a
+                    href={formData.cvUrl}
+                    target="_blank"
+                    className="bg-green-800 px-4 py-2 text-white rounded-md "
+                  >
+                    View CV
+                  </a>
+                </div>
+              )}
+
               <div className="flex flex-col gap-2 items-start my-2">
                 <label htmlFor="city">City</label>
                 <input
@@ -299,7 +363,6 @@ export default function BasicInfo() {
                   }`}
                 >
                   {loading ? "Updating..." : "Update Basic Info"}
-                  
                 </button>
               </div>
               {error && <p className="text-red-700">{error}</p>}
