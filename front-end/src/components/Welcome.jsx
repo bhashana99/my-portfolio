@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaLinkedin, FaGithubSquare, FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter, FaMedium, FaStackOverflow } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 export default function Main() {
   const [basicInfo, setBasicInfo] = useState({});
@@ -39,11 +40,9 @@ export default function Main() {
 
   
   return (
-    <div className="h-screen  flex items-center justify-center">
+    <div className="md:h-screen  flex items-center justify-center">
       {loading ? (
-        <div className="flex items-center justify-center">
-          <div className="w-16 h-16 border-4 border-t-4 border-t-transparent border-white rounded-full animate-spin"></div>
-        </div>
+        <PropagateLoader color="#36d7b7" />
       ) : (
         <div>
           <div className="flex flex-col md:grid md:grid-cols-3 text-center  ">
@@ -95,7 +94,7 @@ export default function Main() {
               )}
             </div>
           </div>
-          <div className=" flex flex-row  justify-center gap-2 md:absolute md:bottom-10 left-1/2 transform -translate-x-1/2">
+          <div className=" flex flex-row  justify-center gap-2 md:absolute md:bottom-10 md:left-1/2 md:transform md:-translate-x-1/2">
             {socialMedia.linkedin && socialMedia.linkedin.link && (
               <a href={socialMedia.linkedin.link}>
                 <FaLinkedin className="text-blue-800 text-3xl" />
