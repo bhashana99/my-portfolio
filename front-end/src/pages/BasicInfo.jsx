@@ -15,12 +15,12 @@ import Swal from "sweetalert2";
 export default function BasicInfo() {
   const fileRef = useRef(null);
   const [cvFile, setCvFile] = useState(undefined);
-  const [file, setFile] = useState(undefined);
+  const [profileImg, setProfileImg] = useState(undefined);
 
   const [cvPerc, setCvPerc] = useState(0);
-  const [filePerc, setFilePerc] = useState(0);
+  const [profileImgPerc, setProfileImgPerc] = useState(0);
   const [cvUploadError, setCvUploadError] = useState(false);
-  const [fileUploadError, setFileUploadError] = useState(false);
+  const [profileImgUploadError, setProfileImgUploadError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -68,14 +68,14 @@ export default function BasicInfo() {
     };
     fetchBasicInfo();
 
-    if (file) {
-      handleUpload(file);
+    if (profileImg) {
+      handleUpload(profileImg);
     }
 
     if (cvFile) {
       handleUpload(cvFile);
     }
-  }, [file, cvFile]);
+  }, [profileImg, cvFile]);
 
   useEffect(() => {
     const hasFormChanged =
@@ -96,14 +96,14 @@ export default function BasicInfo() {
         if (file.type.includes("pdf")) {
           setCvPerc(Math.round(progress));
         } else {
-          setFilePerc(Math.round(progress));
+          setProfileImgPerc(Math.round(progress));
         }
       },
       (error) => {
         if (file.type.includes("pdf")) {
           setCvUploadError(true);
         } else {
-          setFileUploadError(true);
+          setProfileImgUploadError(true);
         }
         console.error("Upload error:", error);
       },
@@ -115,14 +115,14 @@ export default function BasicInfo() {
               setCvPerc(0);
             } else {
               setFormData({ ...formData, profileImage: downloadURL });
-              setFilePerc(0);
+              setProfileImgPerc(0);
             }
           })
           .catch((error) => {
             if (file.type.includes("pdf")) {
               setCvUploadError(true);
             } else {
-              setFileUploadError(true);
+              setProfileImgUploadError(true);
             }
             console.error("Download URL error:", error);
           });
@@ -289,7 +289,7 @@ export default function BasicInfo() {
                     </span>
                   ) : cvPerc > 0 && cvPerc < 100 ? (
                     <span className="text-black">Uploading {cvPerc}%</span>
-                  ) : filePerc === 100 ? (
+                  ) : cvPerc === 100 ? (
                     <span className="text-green-700">
                       Cv successfully uploaded!
                     </span>
@@ -327,7 +327,7 @@ export default function BasicInfo() {
                 </label>
 
                 <input
-                  onChange={(e) => setFile(e.target.files[0])}
+                  onChange={(e) => setProfileImg(e.target.files[0])}
                   type="file"
                   accept="image/.*"
                   className="p-1 "
@@ -342,13 +342,13 @@ export default function BasicInfo() {
                   className="rounded-full w-32 h-32 object-cover cursor-pointer self-center"
                 />
                 <p className="text-sm self-center">
-                  {fileUploadError ? (
+                  {profileImgUploadError ? (
                     <span className="text-red-700">
                       Error Image Upload (image must be less than 20 MB)
                     </span>
-                  ) : filePerc > 0 && filePerc < 100 ? (
-                    <span className="text-black">Uploading {filePerc}%</span>
-                  ) : filePerc === 100 ? (
+                  ) : profileImgPerc > 0 && profileImgPerc < 100 ? (
+                    <span className="text-black">Uploading {profileImgPerc}%</span>
+                  ) : profileImgPerc === 100 ? (
                     <span className="text-green-700">
                       Image successfully uploaded!
                     </span>
