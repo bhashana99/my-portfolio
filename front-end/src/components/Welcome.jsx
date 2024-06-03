@@ -9,6 +9,7 @@ export default function Main() {
   const [basicInfo, setBasicInfo] = useState({});
   const [socialMedia, setSocialMedia] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchBasicInfo = async () => {
@@ -40,37 +41,43 @@ export default function Main() {
 
   
   return (
-    <div className="md:h-screen  flex items-center justify-center">
+    <div className="min-h-screen  flex items-center justify-center ">
       {loading ? (
         <PropagateLoader color="#36d7b7" />
       ) : (
         <div>
-          <div className="flex flex-col md:grid md:grid-cols-3 text-center  ">
+          <div className={`flex flex-col md:grid md:grid-cols-3 text-center ${isExpanded ? 'mt-20' : 'mt-0'} md:mt-0 `}>
             <div className="flex justify-center">
               <img
                 src={basicInfo.profileImage}
                 alt="profile image"
-                className="rounded-full h-80 w-80 object-cover self-center border-double border-blue-600 border-8"
+                className="rounded-full h-52 w-52 md:h-80 md:w-80 object-cover self-center border-double border-blue-600 border-8"
               />
             </div>
-            <div className="col-span-2 text-start">
-              <p className="text-3xl font-semibold font-mono">Hi There,</p>
-              <h1 className="mt-5 text-4xl font-bold font-mono tracking-widest">
+            <div className="col-span-2 text-start md:mx-0 mx-5">
+              <p className="text-xl md:text-3xl font-semibold font-mono mt-3 md:mt-0 text-center md:text-start ">Hi There,</p>
+              <h1 className="mt-5 text-xl md:text-4xl font-bold font-mono tracking-widest">
                 {"I'm "}{" "}
-                <span className="text-red-700 text-5xl">
+                <span className="text-red-700 text-xl md:text-5xl">
                   {basicInfo.firstName}
                 </span>{" "}
                 {basicInfo.lastName}
                 {basicInfo.additionalName && (
-                  <span className="text-sm">
+                  <span className="text-xs">
                     {" ( "} {basicInfo.additionalName} {" ) "}
                   </span>
                 )}
               </h1>
-              <p className="mt-2 font-sans">{basicInfo.headline}</p>
-              <p className="mt-3 text-justify italic md:mr-20  max-w-3xl tracking-wide font-light">
+              <p className="mt-2 font-sans text-sm">{basicInfo.headline}</p>
+              <p className={`mt-3 text-justify italic md:mr-20 max-w-3xl tracking-tight md:tracking-wide font-light ${isExpanded ? '' : 'line-clamp-4'}`}>
                 {basicInfo.about}
               </p>
+              <button
+                className="mt-2 text-blue-500 underline md:hidden"
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? "See Less" : "See More"}
+              </button>
               {/* <div className="flex flex-row items-end  mt-5">
                 <IoLocationOutline className="text-2xl text-blue-800" />
                 <p className="font-thin">
@@ -81,7 +88,7 @@ export default function Main() {
                 </p>
               </div> */}
               {basicInfo.cvUrl && (
-                <div className="mt-10">
+                <div className="mt-10 text-center md:text-start">
                   <a
                     href={basicInfo.cvUrl}
                     download
@@ -94,7 +101,7 @@ export default function Main() {
               )}
             </div>
           </div>
-          <div className=" flex flex-row  justify-center gap-2 md:absolute md:bottom-10 md:left-1/2 md:transform md:-translate-x-1/2">
+          <div className=" flex flex-row  justify-center gap-2 md:absolute md:bottom-10 md:left-1/2 md:transform md:-translate-x-1/2 mt-5 md:mt-0">
             {socialMedia.linkedin && socialMedia.linkedin.link && (
               <a href={socialMedia.linkedin.link}>
                 <FaLinkedin className="text-blue-800 text-3xl" />
