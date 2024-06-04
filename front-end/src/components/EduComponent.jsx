@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import eduImg from "../assets/eduImg1.png";
-import { Link } from "react-router-dom";
 import DotLoader from "react-spinners/DotLoader";
-
-
 
 export default function EduComponent() {
   const [educations, setEducations] = useState([]);
@@ -15,8 +12,7 @@ export default function EduComponent() {
         const res = await fetch("/api/education/get-educations");
         const data = await res.json();
         setEducations(data);
-setLoading(false);
-        // console.log(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -25,51 +21,51 @@ setLoading(false);
   }, []);
 
   return (
-    <div className=" justify-center mx-5">
-      <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
-        Education
-      </h1>
-      <div className="grid md:grid-cols-2 items-center">
-        <div className="">
-          <img src={eduImg} alt="" className="" />
-        </div>
-        <div>
-          {loading ?(
-            <DotLoader
-            className="text-black"/> 
-          ):(
-          
-            <ul>
-            {educations.map((education) => (
-              <li
-                key={education._id}
-                className="border-dashed border-2 border-black bg-slate-200 mt-5 p-3 items-center gap-4 rounded-lg"
-              >
-                <div className="font-serif">
-                  <p className="text-lg md:text-xl font-bold">{education.school}</p>
-                  <p className="font-medium">{education.degreeName}</p>
-                  {education.gpa && (
-                    <p>
-                      GPA: <span className="text-red-400">{education.gpa}</span>
-                    </p>
-                  )}
-                  <p>
-                    {new Date(education.startDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                    })}{" "}
-                    -{" "}
-                    {new Date(education.endDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                    })}
-                  </p>
-                  <p className="my-3 text-justify ">{education.description}</p>
-                </div>
-              </li>
-            ))}
-            </ul>
-          )}
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="w-full max-w-5xl mt-5 mx-5">
+        <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
+          Education
+        </h1>
+        <div className="grid md:grid-cols-2 items-center mt-5 gap-8">
+          <div className="flex justify-center">
+            <img src={eduImg} alt="Education" className="w-full max-w-sm" />
+          </div>
+          <div className="flex flex-col items-center">
+            {loading ? (
+              <DotLoader color="#000000" />
+            ) : (
+              <ul className="w-full">
+                {educations.map((education) => (
+                  <li
+                    key={education._id}
+                    className="border-dashed border-2 border-black bg-slate-200 mt-5 p-3 items-center gap-4 rounded-lg"
+                  >
+                    <div className="font-serif">
+                      <p className="text-lg md:text-xl font-bold">{education.school}</p>
+                      <p className="font-medium">{education.degreeName}</p>
+                      {education.gpa && (
+                        <p>
+                          GPA: <span className="text-red-400">{education.gpa}</span>
+                        </p>
+                      )}
+                      <p>
+                        {new Date(education.startDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                        })}{" "}
+                        -{" "}
+                        {new Date(education.endDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                        })}
+                      </p>
+                      <p className="my-3 text-justify">{education.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
