@@ -26,7 +26,7 @@ setLoading(false);
 
   return (
     <div className=" justify-center mx-5">
-      <h1 className="text-5xl font-bold font-mono text-center underline">
+      <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
         Education
       </h1>
       <div className="grid md:grid-cols-2 items-center">
@@ -46,7 +46,7 @@ setLoading(false);
                 className="border-dashed border-2 border-black bg-slate-200 mt-5 p-3 items-center gap-4 rounded-lg"
               >
                 <div className="font-serif">
-                  <p className="text-xl font-bold">{education.school}</p>
+                  <p className="text-lg md:text-xl font-bold">{education.school}</p>
                   <p className="font-medium">{education.degreeName}</p>
                   {education.gpa && (
                     <p>
