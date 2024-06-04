@@ -69,7 +69,7 @@ export default function Main() {
                 )}
               </h1>
               <p className="mt-2 font-sans text-sm">{basicInfo.headline}</p>
-              <p className={`mt-3 text-justify italic md:mr-20 max-w-3xl tracking-tight md:tracking-wide font-light ${isExpanded ? '' : 'line-clamp-4'}`}>
+              <p className={`mt-3 text-justify italic md:mr-20 max-w-3xl tracking-tight md:tracking-wide font-light ${isExpanded ? '' : 'line-clamp-4 md:line-clamp-none'}`}>
                 {basicInfo.about}
               </p>
               <button
