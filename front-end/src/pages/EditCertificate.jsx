@@ -41,7 +41,7 @@ export default function Certificate() {
       }
       const formattedData = {
         ...data,
-        issueDate: new Date(data.issueDate).toISOString().substring(0, 7),
+        issueDate: new Date(data.issueDate).toISOString().substring(0, 10),
         
       };
 
@@ -134,7 +134,7 @@ const handleSubmit = async (e) => {
                   Issue Date<span className="text-red-600 text-2xl">*</span>
                 </label>
                 <input
-                  type="month"
+                  type="date"
                   id="issueDate"
                   className="p-1"
                   required
@@ -177,7 +177,7 @@ const handleSubmit = async (e) => {
                   disabled={loading || !isFormChanged}
                   className="mt-5 p-3 px-16 bg-green-700 w-full text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
                 >
-                  {loading ? "Adding..." : "Add"}
+                  {loading ? "Editing..." : "Edit"}
                 </button>
               </div>
             </div>

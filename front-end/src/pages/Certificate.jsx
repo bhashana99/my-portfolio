@@ -151,7 +151,7 @@ export default function Certificate() {
                     Issue Date<span className="text-red-600 text-2xl">*</span>
                   </label>
                   <input
-                    type="month"
+                    type="date"
                     id="issueDate"
                     className="p-1"
                     required
