@@ -10,9 +10,12 @@ const projectSchema = new mongoose.Schema({
         type:String,
        
     },
-    imageUrls:{
-        type:Array,
-        required:true
+    repoUrl:{
+        type:String,
+        
+    },
+    siteUrl:{
+        type:String,  
     },
 },{timestamps:true});
 
