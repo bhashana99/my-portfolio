@@ -5,6 +5,7 @@ import Header from '../components/Header'
 import EduComponent from '../components/EduComponent'
 import ExperienceComponent from '../components/ExperienceComponent'
 import CertificateComponent from '../components/CertificateComponent'
+import ProjectComponent from '../components/ProjectComponent'
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <Welcome />
       <EduComponent />
       <ExperienceComponent />
+      <ProjectComponent />
       <CertificateComponent />
     <Footer/>
     </div>
