@@ -32,7 +32,7 @@ export default function ProjectComponent() {
                   key={project._id}
                   className="max-w-sm rounded overflow-hidden shadow-lg hover:border-2 hover:border-black hover:border-dashed"
                 >
-                  <div class="px-6 py-4">
+                  <div className="px-6 py-4">
                     <div className="font-bold text-xl mb-2 ">
                       {project.projectName}
                     </div>
