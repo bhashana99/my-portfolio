@@ -8,7 +8,7 @@ export default function Edit() {
   return (
     <div className="flex flex-col md:flex-row gap-3 bg-gray-300 min-h-screen">
       {/* side bar */}
-      <div className="">
+      <div className="fixed top-0 left-0 h-full w-auto">
         <Sidebar />
       </div>
       {/* welcome */}
