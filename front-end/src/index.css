@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-#brandName-show{
+#brandName-show,#footerBrand{
     font-family: 'Pacifico', cursive;
 
 }

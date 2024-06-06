@@ -56,7 +56,7 @@ export default function ContactComponent() {
 
             {contact.whatsapp && (
               <div className="flex flex-row gap-5">
-                <FaWhatsapp className="text-2xl" />
+                <FaWhatsapp className="text-2xl text-green-500" />
                 {contact.whatsapp}
               </div>
             )}
@@ -64,7 +64,7 @@ export default function ContactComponent() {
           
          
         </div>
-        <div className=" flex flex-row  justify-center gap-2 mt-5">
+        <div className=" flex flex-row  justify-center gap-2 mt-5 md:mt-10">
             {socialMedia.linkedin && socialMedia.linkedin.link && (
               <a href={socialMedia.linkedin.link}>
                 <FaLinkedin className="text-blue-800 text-2xl md:text-3xl " />
