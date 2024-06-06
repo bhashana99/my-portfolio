@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { FaLinkedin, FaGithubSquare, FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter, FaMedium, FaStackOverflow } from "react-icons/fa6";
-import { IoLocationOutline } from "react-icons/io5";
 import PropagateLoader from "react-spinners/PropagateLoader";
 
 export default function Main() {
@@ -28,9 +26,7 @@ export default function Main() {
       try {
         const res = await fetch("/api/socialMedia/get-socialMedia");
         const data = await res.json();
-
         setSocialMedia(data);
-        // console.log(socialMedia.linkedin.link)
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +38,7 @@ export default function Main() {
   const skillsArray = basicInfo.skills ? basicInfo.skills.split(",") : [];
 
   return (
-    <div className="min-h-screen  flex items-center justify-center ">
+    <div className="min-h-screen flex flex-col items-center justify-center md:pt-20">
       {loading ? (
         <PropagateLoader color="#36d7b7" />
       ) : (
@@ -89,15 +85,6 @@ export default function Main() {
               >
                 {isExpanded ? "See Less" : "See More"}
               </button>
-              {/* <div className="flex flex-row items-end  mt-5">
-                <IoLocationOutline className="text-2xl text-blue-800" />
-                <p className="font-thin">
-                  {basicInfo.city},{" "}
-                  <span className="font-medium text-green-800">
-                    {basicInfo.country}
-                  </span>
-                </p>
-              </div> */}
               {basicInfo.skills && (
                 <div className="flex flex-col items-start mt-5">
                   <p className="font-thin mb-1">Skills:</p>
@@ -127,38 +114,39 @@ export default function Main() {
               )}
             </div>
           </div>
-          <div className=" flex flex-row  justify-center gap-2 md:absolute md:bottom-10 md:left-1/2 md:transform md:-translate-x-1/2 mt-5 md:mt-0">
-            {socialMedia.linkedin && socialMedia.linkedin.link && (
-              <a href={socialMedia.linkedin.link}>
-                <FaLinkedin className="text-blue-800 text-3xl" />
-              </a>
-            )}
-            {socialMedia.github && socialMedia.github.link && (
-              <a href={socialMedia.github.link} target="_blank">
-                <FaGithubSquare className="text-3xl" />
-              </a>
-            )}
-            {socialMedia.stackOverflow && socialMedia.stackOverflow.link && (
-              <a href={socialMedia.stackOverflow.link} target="_blank">
-                <FaStackOverflow className="text-3xl bg-orange-500 text-white" />
-              </a>
-            )}
-            {socialMedia.x && socialMedia.x.link && (
-              <a href={socialMedia.x.link} target="_blank">
-                <FaSquareXTwitter className="text-3xl" />
-              </a>
-            )}
-            {socialMedia.medium && socialMedia.medium.link && (
-              <a href={socialMedia.medium.link} target="_blank">
-                <FaMedium className="text-3xl" />
-              </a>
-            )}
-
-            {socialMedia.instagram && socialMedia.instagram.link && (
-              <a href={socialMedia.instagram.link} target="_blank">
-                <FaInstagram className="text-orange-600 text-3xl" />
-              </a>
-            )}
+          <div className="flex flex-col items-center mt-5 md:mt-10">
+            <div className="flex flex-row justify-center gap-2">
+              {socialMedia.linkedin && socialMedia.linkedin.link && (
+                <a href={socialMedia.linkedin.link}>
+                  <FaLinkedin className="text-blue-800 text-3xl" />
+                </a>
+              )}
+              {socialMedia.github && socialMedia.github.link && (
+                <a href={socialMedia.github.link} target="_blank">
+                  <FaGithubSquare className="text-3xl" />
+                </a>
+              )}
+              {socialMedia.stackOverflow && socialMedia.stackOverflow.link && (
+                <a href={socialMedia.stackOverflow.link} target="_blank">
+                  <FaStackOverflow className="text-3xl bg-orange-500 text-white" />
+                </a>
+              )}
+              {socialMedia.x && socialMedia.x.link && (
+                <a href={socialMedia.x.link} target="_blank">
+                  <FaSquareXTwitter className="text-3xl" />
+                </a>
+              )}
+              {socialMedia.medium && socialMedia.medium.link && (
+                <a href={socialMedia.medium.link} target="_blank">
+                  <FaMedium className="text-3xl" />
+                </a>
+              )}
+              {socialMedia.instagram && socialMedia.instagram.link && (
+                <a href={socialMedia.instagram.link} target="_blank">
+                  <FaInstagram className="text-orange-600 text-3xl" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       )}
