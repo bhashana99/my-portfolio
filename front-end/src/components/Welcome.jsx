@@ -39,14 +39,19 @@ export default function Main() {
     fetchBasicInfo();
   }, []);
 
-  
+  const skillsArray = basicInfo.skills ? basicInfo.skills.split(",") : [];
+
   return (
     <div className="min-h-screen  flex items-center justify-center ">
       {loading ? (
         <PropagateLoader color="#36d7b7" />
       ) : (
         <div>
-          <div className={`flex flex-col md:grid md:grid-cols-3 text-center ${isExpanded ? 'mt-20' : 'mt-0'} md:mt-0 `}>
+          <div
+            className={`flex flex-col md:grid md:grid-cols-3 text-center ${
+              isExpanded ? "mt-20" : "mt-0"
+            } md:mt-0 `}
+          >
             <div className="flex justify-center">
               <img
                 src={basicInfo.profileImage}
@@ -55,7 +60,9 @@ export default function Main() {
               />
             </div>
             <div className="col-span-2 text-start md:mx-0 mx-5">
-              <p className="text-xl md:text-3xl font-semibold font-mono mt-3 md:mt-0 text-center md:text-start ">Hi There,</p>
+              <p className="text-xl md:text-3xl font-semibold font-mono mt-3 md:mt-0 text-center md:text-start ">
+                Hi There,
+              </p>
               <h1 className="mt-5 text-xl md:text-4xl font-bold font-mono tracking-widest">
                 {"I'm "}{" "}
                 <span className="text-red-700 text-xl md:text-5xl">
@@ -69,7 +76,11 @@ export default function Main() {
                 )}
               </h1>
               <p className="mt-2 font-sans text-sm">{basicInfo.headline}</p>
-              <p className={`mt-3 text-justify italic md:mr-20 max-w-3xl tracking-tight md:tracking-wide font-light ${isExpanded ? '' : 'line-clamp-4 md:line-clamp-none'}`}>
+              <p
+                className={`mt-3 text-justify italic md:mr-20 max-w-3xl tracking-tight md:tracking-wide font-light ${
+                  isExpanded ? "" : "line-clamp-4 md:line-clamp-none"
+                }`}
+              >
                 {basicInfo.about}
               </p>
               <button
@@ -87,6 +98,21 @@ export default function Main() {
                   </span>
                 </p>
               </div> */}
+              {basicInfo.skills && (
+                <div className="flex flex-col items-start mt-5">
+                  <p className="font-thin mb-1">Skills:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {skillsArray.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
+                      >
+                        {skill.trim()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               {basicInfo.cvUrl && (
                 <div className="mt-10 text-center md:text-start">
                   <a

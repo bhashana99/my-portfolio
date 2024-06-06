@@ -45,6 +45,7 @@ export default function BasicInfo() {
     brandName: "",
     cvUrl: "",
     country: "",
+    skills: "",
     profileImage:
       "https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg",
     city: "",
@@ -255,8 +256,24 @@ export default function BasicInfo() {
                   value={formData.about}
                 />
               </div>
+              <div className="flex flex-col gap-2 items-start my-2">
+                <label htmlFor="skills">
+                  Skills <span className=" text-sm font-bold">{" add your all skills here  "}</span>
+                </label>
+                <textarea
+                  type="text"
+                  placeholder="e.g. React,Node,Express,Java,Python,UI/UX Designing,etc.."
+                  className="p-3  w-full"
+                  id="skills"
+                  rows={2}
+              
+                  onChange={handleChange}
+                  value={formData.skills}
+                />
+              </div>
             </div>
             <div className="flex-1">
+              
               <div className="flex flex-col gap-2 items-start my-2">
                 <label htmlFor="country">
                   Country/Region<span className="text-red-600 text-2xl">*</span>
