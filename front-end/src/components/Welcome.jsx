@@ -38,7 +38,7 @@ export default function Main() {
   const skillsArray = basicInfo.skills ? basicInfo.skills.split(",") : [];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center md:pt-20" id="welcomeCom">
+    <div className="min-h-screen flex flex-col items-center justify-center pt-16 md:pt-20" id="welcomeCom">
       {loading ? (
         <PropagateLoader color="#36d7b7" />
       ) : (
