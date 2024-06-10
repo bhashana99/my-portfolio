@@ -88,11 +88,11 @@ export default function Main() {
               {basicInfo.skills && (
                 <div className="flex flex-col items-start mt-5">
                   <p className="font-thin mb-1">Skills:</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 md:max-w-xl">
                     {skillsArray.map((skill, index) => (
                       <span
                         key={index}
-                        className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
+                        className="bg-blue-100 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
                       >
                         {skill.trim()}
                       </span>
@@ -117,7 +117,7 @@ export default function Main() {
           <div className="flex flex-col items-center mt-5 md:mt-10">
             <div className="flex flex-row justify-center gap-2">
               {socialMedia.linkedin && socialMedia.linkedin.link && (
-                <a href={socialMedia.linkedin.link}>
+                <a href={socialMedia.linkedin.link} target="_blank">
                   <FaLinkedin className="text-blue-800 text-3xl" />
                 </a>
               )}
