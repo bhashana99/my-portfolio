@@ -24,43 +24,48 @@ export default function Header() {
         fetchBasicInfo();
     }, []);
   return (
-    <header className="bg-slate-200 shadow-md w-full fixed md:py-2 py-1">
+    <header className="bg-blue-800 shadow-md w-full fixed md:py-2 py-1">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap ">
            
-            <span className="text-slate-700" id="brandName-show">{basicInfo.brandName}</span>
+            <span className="text-yellow-300" id="brandName-show">{basicInfo.brandName}</span>
           </h1>
         </Link>
 
         
-        <ul className="flex gap-4 font-mono text-slate-700  ">
-          <Link to="/">
-            <li className="hidden sm:inline text-slate-700 hover:underline">
+        <ul className="flex gap-4 font-mono  text-blue-200 ">
+          <a href="#welcomeCom">
+            <li className="hidden sm:inline hover:text-blue-400">
               Home
             </li>
-          </Link>
+          </a>
           
-          <Link to="">
-            <li className="hidden sm:inline text-slate-700 hover:underline">
+          <a href="#eduCom">
+            <li className="hidden sm:inline  hover:text-blue-400">
               Education
             </li>
-          </Link>
-          <Link to="">
-            <li className="hidden sm:inline text-slate-700 hover:underline">
+          </a>
+          <a href="#exeCom">
+            <li className="hidden sm:inline hover:text-blue-400">
                 Experience
             </li>
-          </Link>
-          <Link to="">
-            <li className="hidden sm:inline text-slate-700 hover:underline">
+          </a>
+          <a href="#projectCom">
+            <li className="hidden sm:inline hover:text-blue-400">
+                projects
+            </li>
+          </a>
+          <a href="#certificateCom">
+            <li className="hidden sm:inline hover:text-blue-400">
               Certificate
             </li>
-          </Link>
-          <Link to="">
-            <li className="hidden sm:inline text-slate-700 hover:underline">
+          </a>
+          <a href="#contactCom">
+            <li className="hidden sm:inline  hover:text-blue-400">
               Contact
             </li>
-          </Link>
+          </a>
 
           
         </ul>

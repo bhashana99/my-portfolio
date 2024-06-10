@@ -21,7 +21,7 @@ export default function EduComponent() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen"  id="certificateCom" >
       <div className="w-full max-w-5xl mt-5 mx-5">
         <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
           Certificate
@@ -38,10 +38,10 @@ export default function EduComponent() {
                 {certificates.map((certificate) => (
                   <li
                     key={certificate._id}
-                    className="bg-slate-200 mt-5 p-3 items-center gap-4 rounded-lg"
+                    className="bg-blue-100 hover:bg-blue-200 mt-5 p-3 items-center gap-4 rounded-lg"
                     
                   >
-                    <div className="font-serif">
+                    <div className="font-sans">
                       <p className="text-lg md:text-xl font-bold">{certificate.name}</p>
                       <p className="font-medium">
                         {certificate.issuingOrganization}

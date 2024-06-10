@@ -21,7 +21,7 @@ export default function EduComponent() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen"  id="exeCom" >
       <div className="w-full max-w-5xl mt-5 mx-5">
         <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
           Experience
@@ -38,9 +38,9 @@ export default function EduComponent() {
                 {works.map((work) => (
                   <li
                     key={work._id}
-                    className="bg-slate-200 mt-5 p-3 items-center gap-4 rounded-lg"
+                    className="bg-blue-200 mt-5 p-3 items-center gap-4 rounded-lg"
                   >
-                    <div className="font-serif">
+                    <div className="font-sans">
                       <p className="text-lg md:text-xl font-bold">{work.title}</p>
                       <p className="font-medium">
                         {work.companyName} {" - "} {work.employmentType} {" ("}

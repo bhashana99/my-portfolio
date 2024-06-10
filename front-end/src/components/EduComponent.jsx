@@ -21,7 +21,7 @@ export default function EduComponent() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen"  id="eduCom" >
       <div className="w-full max-w-5xl mt-5 mx-5">
         <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
           Education
@@ -38,9 +38,9 @@ export default function EduComponent() {
                 {educations.map((education) => (
                   <li
                     key={education._id}
-                    className="border-dashed border-2 border-black bg-slate-200 mt-5 p-3 items-center gap-4 rounded-lg"
+                    className="border-2 border-blue-200 bg-blue-50 mt-5 p-3 items-center gap-4 rounded-xl text-left"
                   >
-                    <div className="font-serif">
+                    <div className="font-sans">
                       <p className="text-lg md:text-xl font-bold">{education.school}</p>
                       <p className="font-medium">{education.degreeName}</p>
                       {education.gpa && (

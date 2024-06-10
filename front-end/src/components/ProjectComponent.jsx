@@ -19,24 +19,24 @@ export default function ProjectComponent() {
     fetchProjects();
   }, []);
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen" id="projectCom">
       <div className="w-full max-w-5xl mt-5 mx-5">
         <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
           Projects
         </h1>
         <div className=" items-center mt-5 md:mt-16 ">
-          <div className="flex flex-row items-center h-full w-full">
-            <div className="grid md:grid-cols-3  gap-2 ">
+          <div className="flex flex-row items-center h-full w-full text-center">
+            <div className="grid md:grid-cols-3  gap-2  ">
               {projects.map((project) => (
                 <div
                   key={project._id}
-                  className="max-w-sm rounded overflow-hidden shadow-lg hover:border-2 hover:border-black hover:border-dashed"
+                  className="max-w-sm bg-blue-50 rounded overflow-hidden shadow-lg border border-blue-800  "
                 >
-                  <div className="px-6 py-4">
-                    <div className="font-bold text-xl mb-2 ">
+                  <div className="px-6 py-4 font-sans">
+                    <div className="font-bold text-xl mb-2">
                       {project.projectName}
                     </div>
-                    <p className="text-gray-700 text-base italic">
+                    <p className="text-black  text-sm text-justify">
                       {project.projectDescription}{" "}
                     </p>
                   </div>
@@ -54,7 +54,7 @@ export default function ProjectComponent() {
                         href={project.siteUrl}
                         className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
                       >
-                        Site
+                        Demo
                       </a>
                     )}
                   </div>

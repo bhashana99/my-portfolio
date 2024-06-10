@@ -15,6 +15,7 @@ import EditProject from "./pages/EditProject";
 import EditEducation from "./pages/EditEducation";
 import EditCertificate from "./pages/EditCertificate";
 import EditExperience from "./pages/EditExperience";
+import CertificateComponent from "./components/CertificateComponent";
 
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+       
         <Route path="/sign-in" element={<SignIn />} />
         <Route element={<PrivateRoute />}>
           <Route path="/edit" element={<Edit />} />

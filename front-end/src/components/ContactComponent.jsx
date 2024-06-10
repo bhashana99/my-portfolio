@@ -36,7 +36,7 @@ export default function ContactComponent() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center ">
+    <div className="flex justify-center items-center "  id="contactCom" >
       <div className="w-full max-w-5xl mt-5 mx-5">
         <h1 className="text-2xl md:text-5xl font-bold font-mono text-center ">
           Contact Me...
@@ -44,12 +44,12 @@ export default function ContactComponent() {
         <div className="mt-10 flex justify-center">
           <div className="flex flex-col gap-5">
             <div className="flex flex-row gap-5 ">
-              <FaEnvelope className="text-2xl" />
+              <FaEnvelope className="text-2xl text-blue-800" />
               <p>{contact.email}</p>
             </div>
             {contact.phone && (
               <div className="flex flex-row gap-5">
-                <FaPhoneAlt className="text-2xl" />
+                <FaPhoneAlt className="text-2xl text-blue-700" />
                 <p>{contact.phone}</p>
               </div>
             )}

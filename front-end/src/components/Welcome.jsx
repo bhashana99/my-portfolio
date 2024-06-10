@@ -38,7 +38,7 @@ export default function Main() {
   const skillsArray = basicInfo.skills ? basicInfo.skills.split(",") : [];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center md:pt-20">
+    <div className="min-h-screen flex flex-col items-center justify-center md:pt-20" id="welcomeCom">
       {loading ? (
         <PropagateLoader color="#36d7b7" />
       ) : (
@@ -61,7 +61,7 @@ export default function Main() {
               </p>
               <h1 className="mt-5 text-xl md:text-4xl font-bold font-mono tracking-widest">
                 {"I'm "}{" "}
-                <span className="text-red-700 text-xl md:text-5xl">
+                <span className="text-blue-600 text-xl md:text-5xl">
                   {basicInfo.firstName}
                 </span>{" "}
                 {basicInfo.lastName}

@@ -22,11 +22,11 @@ const [basicInfo, setBasicInfo] = useState({});
   }, []);
 
   return (
-    <div className="bg-slate-600 mt-10 md:mt-16 flex  justify-around py-5">
+    <div className="bg-gray-800 mt-10 md:mt-16 flex  justify-around py-5">
       <div>
-        <p className="font-sans">
+        <p className="font-sans text-white">
         <span className="">&#169;</span> 2024 {" "}
-<span className="" id="footerBrand">{basicInfo.brandName}</span>{" "}
+<span className="text-yellow-300" id="footerBrand">{basicInfo.brandName}</span>{" "}
 
 
         </p>
@@ -35,11 +35,11 @@ const [basicInfo, setBasicInfo] = useState({});
       <p className="font-sans">
         
         {currentUser ?(
-          <Link to="/edit" className="hover:underline font-semibold">
-         Edit this page
+          <Link to="/edit" className="hover:underline text-white font-semibold">
+         Edit page
         </Link>
-        ) : (<Link to="/sign-in" className="hover:underline font-semibold">
-      Edit this page
+        ) : (<Link to="/sign-in" className="hover:underline text-white font-semibold">
+      Edit page
       </Link>)}
      
       </p>
