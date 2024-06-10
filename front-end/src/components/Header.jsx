@@ -1,82 +1,82 @@
-import React,{useEffect,useState} from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link,useLocation } from "react-router-dom";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 
 export default function Header() {
+  const [basicInfo, setBasicInfo] = useState({});
+  const [showMenu, setShowMenu] = useState(true);
 
-    const [basicInfo, setBasicInfo] = useState({});
-    const [showMenu, setShowMenu] = useState(true);
-    
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
-    const handleMenu = () => {
-      setShowMenu(!showMenu);
-    };
   
-    const handleClick = () => {
-      setShowMenu(!showMenu);
+
+  const handleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const handleClick = () => {
+    setShowMenu(!showMenu);
+  };
+
+  useEffect(() => {
+    const fetchBasicInfo = async () => {
+      try {
+        const res = await fetch("/api/basicInfo/get-basicInfo");
+        const data = await res.json();
+        setBasicInfo(data);
+
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
-    useEffect(() => {
-        const fetchBasicInfo = async () => {
-          try {
-            const res = await fetch("/api/basicInfo/get-basicInfo");
-            const data = await res.json();
-            setBasicInfo(data);
-            
-            setLoading(false);
-          } catch (error) {
-            console.log(error);
-          }
-        };
+    fetchBasicInfo();
+  }, []);
 
-        fetchBasicInfo();
-    }, []);
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.slice(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location.hash]);
+
   return (
     <header className="bg-blue-800 shadow-md w-full fixed md:py-2 py-1">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap ">
-           
-            <span className="text-yellow-300" id="brandName-show">{basicInfo.brandName}</span>
+            <span className="text-yellow-300" id="brandName-show">
+              {basicInfo.brandName}
+            </span>
           </h1>
         </Link>
 
-        
         <ul className="flex gap-4 font-mono  text-blue-200 ">
-          <a href="#welcomeCom" >
-            <li className="hidden sm:inline hover:text-blue-400">
-              Home
-            </li>
-          </a>
-          
-          <a href="#eduCom" >
-            <li className="hidden sm:inline  hover:text-blue-400">
-              Education
-            </li>
-          </a>
-          <a href="#exeCom">
-            <li className="hidden sm:inline hover:text-blue-400">
-                Experience
-            </li>
-          </a>
-          <a href="#projectCom" onClick={handleClick}>
-            <li className="hidden sm:inline hover:text-blue-400">
-                projects
-            </li>
-          </a>
-          <a href="#certificateCom" >
-            <li className="hidden sm:inline hover:text-blue-400">
+          <Link to="#welcomeCom">
+            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#welcomeCom" ? "underline" : ""}`}>Home</li>
+          </Link>
+
+          <Link to="#eduCom">
+            <li className={`hidden sm:inline  hover:text-blue-400 ${location.hash === "#eduCom" ? "underline" : ""} `}>Education</li>
+          </Link>
+          <Link to="#exeCom">
+            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#exeCom" ? "underline" : ""} `}>Experience</li>
+          </Link>
+          <Link to="#projectCom">
+            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#projectCom" ?  "underline" : ""}`}>projects</li>
+          </Link>
+          <Link to="#certificateCom">
+            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#certificateCom" ?  "underline" : ""}`}>
               Certificate
             </li>
-          </a>
-          <a href="#contactCom" >
-            <li className="hidden sm:inline  hover:text-blue-400">
-              Contact
-            </li>
-          </a>
-
-          
+          </Link>
+          <Link to="#contactCom">
+            <li className={`hidden sm:inline  hover:text-blue-400 ${location.hash === "#contactCom" ?  "underline" : ""} `}>Contact</li>
+          </Link>
         </ul>
         <div onClick={handleMenu} className="block md:hidden">
           {!showMenu ? (
@@ -94,40 +94,26 @@ export default function Header() {
           }
         >
           <ul className=" text-blue-200 pt-20 font-bold ">
-          <a href="#welcomeCom" onClick={handleClick}>
-            <li className="p-3 border-b border-blue-600">
-              Home
-            </li>
-          </a>
-          
-          <a href="#eduCom" onClick={handleClick}>
-            <li className="p-3 border-b border-blue-600">
-              Education
-            </li>
-          </a>
-          <a href="#exeCom" onClick={handleClick}>
-            <li className="p-3 border-b border-blue-600">
-                Experience
-            </li>
-          </a>
-          <a href="#projectCom" onClick={handleClick}>
-            <li className="p-3 border-b border-blue-600">
-                projects
-            </li>
-          </a>
-          <a href="#certificateCom" onClick={handleClick}>
-            <li className="p-3 border-b border-blue-600">
-              Certificate
-            </li>
-          </a>
-          <a href="#contactCom" onClick={handleClick}>
-            <li className="p-3 border-b border-blue-600">
-              Contact
-            </li>
-          </a>
+            <Link to="#welcomeCom" onClick={handleClick}>
+              <li className="p-3 border-b border-blue-600">Home</li>
+            </Link>
 
-          
-        </ul>
+            <Link to="#eduCom" onClick={handleClick}>
+              <li className="p-3 border-b border-blue-600">Education</li>
+            </Link>
+            <Link to="#exeCom" onClick={handleClick}>
+              <li className="p-3 border-b border-blue-600">Experience</li>
+            </Link>
+            <Link to="#projectCom" onClick={handleClick}>
+              <li className="p-3 border-b border-blue-600">projects</li>
+            </Link>
+            <Link to="#certificateCom" onClick={handleClick}>
+              <li className="p-3 border-b border-blue-600">Certificate</li>
+            </Link>
+            <Link to="#contactCom" onClick={handleClick}>
+              <li className="p-3 border-b border-blue-600">Contact</li>
+            </Link>
+          </ul>
         </div>
       </div>
     </header>

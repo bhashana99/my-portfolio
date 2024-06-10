@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { FaLinkedin, FaGithubSquare, FaInstagram } from "react-icons/fa";
 import { FaSquareXTwitter, FaMedium, FaStackOverflow } from "react-icons/fa6";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { useLocation } from "react-router-dom";
 
 export default function Main() {
   const [basicInfo, setBasicInfo] = useState({});
   const [socialMedia, setSocialMedia] = useState({});
   const [loading, setLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
+  
+
+  
 
   useEffect(() => {
     const fetchBasicInfo = async () => {
