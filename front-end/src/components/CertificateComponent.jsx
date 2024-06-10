@@ -42,32 +42,40 @@ export default function EduComponent() {
                     
                   >
                     <div className="font-sans">
-                      <p className="text-lg md:text-xl font-bold">{certificate.name}</p>
-                      <p className="font-medium">
+                    {certificate.credentialUrl && certificates.length < 4 ? (
+                           
+                      <p className="text-lg md:text-xl font-bold ">{certificate.name}</p>
+                    
+                    ):
+                    <a href={certificate.credentialUrl} target="_blank" rel="noopener noreferrer">
+                    <p className="text-lg  hover:text-blue-600 hover:cursor-pointer ">{certificate.name}</p>
+                    </a>
+                    }
+                      
+                      {certificates.length < 4  && (
+                        <>
+                        <p className="font-medium">
                         {certificate.issuingOrganization}
                       </p>
-                      <p>
-                       {"Issued"} {new Date(certificate.issueDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}{" "}
-                       
-                       
-                      </p>
-                      {certificate.credentialId && (
-                        <p>
-                            Credential ID: {certificate.credentialId}
-                        </p>
-                      )}
-
-                      {
-                        certificate.credentialUrl && (
-                            <a href={certificate.credentialUrl} target="_blank">
-                            <p className="text-blue-400 underline">View Certificate</p>
+                          <p>
+                            {"Issued"} {new Date(certificate.issueDate).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })}{" "}
+                          </p>
+                          {certificate.credentialId && (
+                            <p>
+                              Credential ID: {certificate.credentialId}
+                            </p>
+                          )}
+                          {certificate.credentialUrl && (
+                            <a href={certificate.credentialUrl} target="_blank" rel="noopener noreferrer">
+                              <p className="text-blue-400 underline">View Certificate</p>
                             </a>
-                        )
-                      }
+                          )}
+                        </>
+                      )}
                       
                     </div>
                   </li>
