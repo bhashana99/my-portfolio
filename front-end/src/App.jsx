@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
@@ -19,6 +20,42 @@ import CertificateComponent from "./components/CertificateComponent";
 
 
 export default function App() {
+  const [brandName, setBrandName] = useState('');
+  const [profileImage, setProfileImage] = useState('');
+
+
+  useEffect(() => {
+    const fetchBasicInfo = async () => {
+      try {
+        const res = await fetch("/api/basicInfo/get-basicInfo");
+        const data = await res.json();
+        
+        setBrandName(data.brandName);
+        setProfileImage(data.profileImage);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+   
+
+    fetchBasicInfo();
+  }, []);
+
+  useEffect(() => {
+    // Set document title
+    if (brandName) {
+      document.title = brandName;
+    }
+
+    // Set favicon
+    if (profileImage) {
+      const favicon = document.getElementById('favicon');
+      favicon.href = profileImage;
+    }
+  }, [brandName, profileImage]);
+
+
   return (
     <BrowserRouter>
       <Routes>
@@ -41,6 +78,7 @@ export default function App() {
           <Route path="/edit-experience/:workId" element={<EditExperience />} />
         </Route>
       </Routes>
+      
     </BrowserRouter>
   );
 }
