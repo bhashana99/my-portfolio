@@ -38,7 +38,7 @@ export default function EduComponent() {
                 {certificates.map((certificate) => (
                   <li
                     key={certificate._id}
-                    className="bg-blue-100 hover:bg-blue-200 mt-5 p-3 items-center gap-4 rounded-lg"
+                    className="bg-blue-100  mt-5 p-3 items-center gap-4 rounded-lg"
                     
                   >
                     <div className="font-sans">
