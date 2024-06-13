@@ -44,7 +44,7 @@ app.use("/api/work", workRouter);
 app.use(express.static(path.join(__dirname, "/front-end/dist")));
 
 app.get("*", (req, res) =>{
-  res.sendFile(path.join(__dirname, "front-end", "dist", "index.html"))
+  res.sendFile(path.join(__dirname, "/front-end/dist/index.html"))
 });
 
 app.use((err, req, res, next) => {
