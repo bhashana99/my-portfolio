@@ -83,17 +83,42 @@ export default function Sidebar() {
         </div>
         <div>
           <ul className="mt-5 ">
-            <Link to="/basic-info" ><li className="py-2 border-b border-b-gray-600">Basic Info</li></Link>
-            <Link to="/social-media" ><li className="py-2 border-b border-b-gray-600">Social Media</li></Link>
-            <Link to="/projects" ><li className="py-2 border-b border-b-gray-600">Projects</li></Link>
-            <Link to="/education" ><li className="py-2 border-b border-b-gray-600">Education</li></Link>
-            <Link to="/certificate" ><li className="py-2 border-b border-b-gray-600">Certificate</li></Link>
-            <Link to="/experience" ><li className="py-2 border-b border-b-gray-600">Work Experience</li></Link>
-            <Link to="/contact" ><li className="py-2">Contact</li></Link>
+            <Link to="/basic-info">
+              <li className="py-2 border-b border-b-gray-600">Basic Info</li>
+            </Link>
+            <Link to="/social-media">
+              <li className="py-2 border-b border-b-gray-600">Social Media</li>
+            </Link>
+            <Link to="/projects">
+              <li className="py-2 border-b border-b-gray-600">Projects</li>
+            </Link>
+            <Link to="/education">
+              <li className="py-2 border-b border-b-gray-600">Education</li>
+            </Link>
+            <Link to="/certificate">
+              <li className="py-2 border-b border-b-gray-600">Certificate</li>
+            </Link>
+            <Link to="/experience">
+              <li className="py-2 border-b border-b-gray-600">
+                Work Experience
+              </li>
+            </Link>
+            <Link to="/contact">
+              <li className="py-2">Contact</li>
+            </Link>
+            <Link to="/">
+              {" "}
+              <li className="py-2 flex flex-row items-center gap-2 text-green-600">
+                <VscSignOut /> Back to Portfolio
+              </li>
+            </Link>
+            <Link to="/setting">
+              {" "}
+              <li className="py-2 flex flex-row items-center gap-2 text-green-600">
+                <IoSettingsOutline /> Settings
+              </li>
+            </Link>
 
-           <Link to="/setting"> <li className="py-2 flex flex-row items-center gap-2 text-green-600">
-              <IoSettingsOutline /> Settings
-            </li></Link>
             <li
               className="py-2 flex flex-row items-center gap-2 text-red-600 cursor-pointer"
               onClick={handleSignOut}
