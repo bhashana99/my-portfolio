@@ -142,7 +142,7 @@ export default function Header() {
               </span>
             </h1>
           </Link>
-          <ul className=" text-blue-200 pt-10 font-bold ">
+          <ul className=" text-blue-200 pt-1 font-bold ">
             <Link to="#welcomeCom" onClick={handleClick}>
               <li className="p-3 border-b border-blue-600">Home</li>
             </Link>
