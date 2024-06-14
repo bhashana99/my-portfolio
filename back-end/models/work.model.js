@@ -3,40 +3,47 @@ import mongoose from "mongoose";
 const workSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
+    default: "Job Title"
   },
   employmentType: {
     type: String,
-    require: true,
+    required: true,
+    default: "Full-time"
   },
   companyName: {
     type: String,
-    require: true,
+    required: true,
+    default: "Company Name"
   },
   companyLocation: {
     type: String,
-    require: true,
+    required: true,
+    default: "Company Location"
   },
   locationType: {
     type: String,
-    require: true,
+    required: true,
+    default: "On-site"
   },
   currentlyWorking: {
     type: Boolean,
-    default: false,
+    default: false
   },
   startDate: {
     type: Date,
-    require: true,
+    required: true,
+    default: Date.now
   },
   endDate: {
     type: Date,
+    default: null
   },
-  description:{
-    type:String,
-  
+  description: {
+    type: String,
+    default: "Job description and key responsibilities."
   }
-},{timestamps:true});
+}, { timestamps: true });
 
 const Work = mongoose.model("Work", workSchema);
 

@@ -1,29 +1,31 @@
 import mongoose from "mongoose";
 
 const certificateSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    
+    name: {
+        type: String,
+        required: true,
+        default: "Sample Certificate"
     },
-    issuingOrganization:{
-        type:String,
-        required:true
+    issuingOrganization: {
+        type: String,
+        required: true,
+        default: "Organization Name"
     },
-    issueDate:{
-        type:Date,
-        required:true
+    issueDate: {
+        type: Date,
+        required: true,
+        default: Date.now
     },
-    
-    credentialId:{
-        type:String
+    credentialId: {
+        type: String,
+        default: "123456"
     },
-    credentialUrl:{
-        type:String
-    
+    credentialUrl: {
+        type: String,
+        default: "https://example.com/certificate"
     }
-},{timestamps:true});
+}, { timestamps: true });
 
-const Certificate = mongoose.model("Certificate",certificateSchema);
+const Certificate = mongoose.model("Certificate", certificateSchema);
 
 export default Certificate;
