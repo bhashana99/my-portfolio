@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import { IoIosSettings } from "react-icons/io";
 
 export default function Header() {
+  const { currentUser } = useSelector((state) => state.user);
   const [basicInfo, setBasicInfo] = useState({});
   const [showMenu, setShowMenu] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-
-  
 
   const handleMenu = () => {
     setShowMenu(!showMenu);
@@ -57,26 +58,67 @@ export default function Header() {
 
         <ul className="flex gap-4 font-mono  text-blue-200 ">
           <Link to="#welcomeCom">
-            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#welcomeCom" ? "underline" : ""}`}>Home</li>
+            <li
+              className={`hidden sm:inline hover:text-blue-400 ${
+                location.hash === "#welcomeCom" ? "underline" : ""
+              }`}
+            >
+              Home
+            </li>
           </Link>
 
           <Link to="#eduCom">
-            <li className={`hidden sm:inline  hover:text-blue-400 ${location.hash === "#eduCom" ? "underline" : ""} `}>Education</li>
+            <li
+              className={`hidden sm:inline  hover:text-blue-400 ${
+                location.hash === "#eduCom" ? "underline" : ""
+              } `}
+            >
+              Education
+            </li>
           </Link>
           <Link to="#exeCom">
-            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#exeCom" ? "underline" : ""} `}>Experience</li>
+            <li
+              className={`hidden sm:inline hover:text-blue-400 ${
+                location.hash === "#exeCom" ? "underline" : ""
+              } `}
+            >
+              Experience
+            </li>
           </Link>
           <Link to="#projectCom">
-            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#projectCom" ?  "underline" : ""}`}>projects</li>
+            <li
+              className={`hidden sm:inline hover:text-blue-400 ${
+                location.hash === "#projectCom" ? "underline" : ""
+              }`}
+            >
+              projects
+            </li>
           </Link>
           <Link to="#certificateCom">
-            <li className={`hidden sm:inline hover:text-blue-400 ${location.hash === "#certificateCom" ?  "underline" : ""}`}>
+            <li
+              className={`hidden sm:inline hover:text-blue-400 ${
+                location.hash === "#certificateCom" ? "underline" : ""
+              }`}
+            >
               Certificate
             </li>
           </Link>
           <Link to="#contactCom">
-            <li className={`hidden sm:inline  hover:text-blue-400 ${location.hash === "#contactCom" ?  "underline" : ""} `}>Contact</li>
+            <li
+              className={`hidden sm:inline  hover:text-blue-400 ${
+                location.hash === "#contactCom" ? "underline" : ""
+              } `}
+            >
+              Contact
+            </li>
           </Link>
+          {currentUser ? (
+            <Link to="/edit">
+              <IoIosSettings className="text-2xl hidden sm:inline" />
+            </Link>
+          ) : (
+            ""
+          )}
         </ul>
         <div onClick={handleMenu} className="block md:hidden">
           {!showMenu ? (
@@ -89,11 +131,18 @@ export default function Header() {
         <div
           className={
             !showMenu
-              ? "fixed left-0 top-0 w-[80%] h-full border-r border-r-blue-900  bg-blue-700 ease-in-out duration-500 "
+              ? "fixed left-0 top-0 w-[80%] h-full border-r border-r-blue-900  bg-blue-800 ease-in-out duration-500 "
               : "fixed left-[-100%] "
           }
         >
-          <ul className=" text-blue-200 pt-20 font-bold ">
+          <Link to="/">
+            <h1 className="font-bold py-4 ml-5 ">
+              <span className="text-yellow-300" id="brandName-show">
+                {basicInfo.brandName}
+              </span>
+            </h1>
+          </Link>
+          <ul className=" text-blue-200 pt-10 font-bold ">
             <Link to="#welcomeCom" onClick={handleClick}>
               <li className="p-3 border-b border-blue-600">Home</li>
             </Link>
@@ -113,6 +162,15 @@ export default function Header() {
             <Link to="#contactCom" onClick={handleClick}>
               <li className="p-3 border-b border-blue-600">Contact</li>
             </Link>
+            {currentUser ? (
+              <Link to="/edit">
+                <li className="p-3 border-b border-blue-600 text-red-500">
+                  Edit Page
+                </li>
+              </Link>
+            ) : (
+              ""
+            )}
           </ul>
         </div>
       </div>
