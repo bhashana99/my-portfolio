@@ -64,3 +64,13 @@ export const updateEducation = async (req, res, next) => {
         next(error);
     }
 }
+
+export const isEducationTableEmpty = async (req, res, next) => {
+    try {
+        const count = await Education.countDocuments();
+        const isEmpty = count === 0;
+        return res.status(200).json({ isEmpty });
+    } catch (error) {
+        next(error);
+    }
+};
