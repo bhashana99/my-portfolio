@@ -8,8 +8,12 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const [basicInfo, setBasicInfo] = useState({});
   const [showMenu, setShowMenu] = useState(true);
-  const [isCertificateEmpty, setIsCertificateEmpty] = useState(true);
-
+  const [isSectionEmpty, setIsSectionEmpty] = useState({
+    certificate: true,
+    project: true,
+    education: true,
+    work: true,
+  });
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
@@ -27,26 +31,39 @@ export default function Header() {
         const res = await fetch("/api/basicInfo/get-basicInfo");
         const data = await res.json();
         setBasicInfo(data);
-
         setLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
 
-    const checkIfCertificatesEmpty = async () => {
+    const checkIfSectionsEmpty = async () => {
       try {
-        const res = await fetch("/api/certificate/is-empty");
-        const data = await res.json();
-        setIsCertificateEmpty(data.isEmpty);
+        const [certRes, projRes, eduRes, workRes] = await Promise.all([
+          fetch("/api/certificate/is-empty"),
+          fetch("/api/project/is-empty"),
+          fetch("/api/education/is-empty"),
+          fetch("/api/work/is-empty"),
+        ]);
+
+        const certData = await certRes.json();
+        const projData = await projRes.json();
+        const eduData = await eduRes.json();
+        const workData = await workRes.json();
+
+        setIsSectionEmpty({
+          certificate: certData.isEmpty,
+          project: projData.isEmpty,
+          education: eduData.isEmpty,
+          work: workData.isEmpty,
+        });
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchBasicInfo();
-    checkIfCertificatesEmpty(); 
-
+    checkIfSectionsEmpty();
   }, []);
 
   useEffect(() => {
@@ -69,7 +86,7 @@ export default function Header() {
           </h1>
         </Link>
 
-        <ul className="flex gap-4 font-mono  text-blue-200 ">
+        <ul className="flex gap-4 font-mono text-blue-200">
           <Link to="#welcomeCom">
             <li
               className={`hidden sm:inline hover:text-blue-400 ${
@@ -79,35 +96,40 @@ export default function Header() {
               Home
             </li>
           </Link>
-
-          <Link to="#eduCom">
-            <li
-              className={`hidden sm:inline  hover:text-blue-400 ${
-                location.hash === "#eduCom" ? "underline" : ""
-              } `}
-            >
-              Education
-            </li>
-          </Link>
-          <Link to="#exeCom">
-            <li
-              className={`hidden sm:inline hover:text-blue-400 ${
-                location.hash === "#exeCom" ? "underline" : ""
-              } `}
-            >
-              Experience
-            </li>
-          </Link>
-          <Link to="#projectCom">
-            <li
-              className={`hidden sm:inline hover:text-blue-400 ${
-                location.hash === "#projectCom" ? "underline" : ""
-              }`}
-            >
-              projects
-            </li>
-          </Link>
-          {!isCertificateEmpty && (
+          {!isSectionEmpty.education && (
+            <Link to="#eduCom">
+              <li
+                className={`hidden sm:inline hover:text-blue-400 ${
+                  location.hash === "#eduCom" ? "underline" : ""
+                }`}
+              >
+                Education
+              </li>
+            </Link>
+          )}
+          {!isSectionEmpty.work && (
+            <Link to="#exeCom">
+              <li
+                className={`hidden sm:inline hover:text-blue-400 ${
+                  location.hash === "#exeCom" ? "underline" : ""
+                }`}
+              >
+                Experience
+              </li>
+            </Link>
+          )}
+          {!isSectionEmpty.project && (
+            <Link to="#projectCom">
+              <li
+                className={`hidden sm:inline hover:text-blue-400 ${
+                  location.hash === "#projectCom" ? "underline" : ""
+                }`}
+              >
+                Projects
+              </li>
+            </Link>
+          )}
+          {!isSectionEmpty.certificate && (
             <Link to="#certificateCom">
               <li
                 className={`hidden sm:inline hover:text-blue-400 ${
@@ -120,19 +142,17 @@ export default function Header() {
           )}
           <Link to="#contactCom">
             <li
-              className={`hidden sm:inline  hover:text-blue-400 ${
+              className={`hidden sm:inline hover:text-blue-400 ${
                 location.hash === "#contactCom" ? "underline" : ""
-              } `}
+              }`}
             >
               Contact
             </li>
           </Link>
-          {currentUser ? (
+          {currentUser && (
             <Link to="/edit">
               <IoIosSettings className="text-2xl hidden sm:inline" />
             </Link>
-          ) : (
-            ""
           )}
         </ul>
         <div onClick={handleMenu} className="block md:hidden">
@@ -146,45 +166,50 @@ export default function Header() {
         <div
           className={
             !showMenu
-              ? "fixed left-0 top-0 w-[80%] h-full border-r border-r-blue-900  bg-blue-800 ease-in-out duration-500 "
-              : "fixed left-[-100%] "
+              ? "fixed left-0 top-0 w-[80%] h-full border-r border-r-blue-900 bg-blue-800 ease-in-out duration-500"
+              : "fixed left-[-100%]"
           }
         >
           <Link to="/">
-            <h1 className="font-bold py-4 ml-5 ">
+            <h1 className="font-bold py-4 ml-5">
               <span className="text-yellow-300" id="brandName-show">
                 {basicInfo.brandName}
               </span>
             </h1>
           </Link>
-          <ul className=" text-blue-200 pt-1 font-bold ">
+          <ul className="text-blue-200 pt-1 font-bold">
             <Link to="#welcomeCom" onClick={handleClick}>
               <li className="p-3 border-b border-blue-600">Home</li>
             </Link>
-
-            <Link to="#eduCom" onClick={handleClick}>
-              <li className="p-3 border-b border-blue-600">Education</li>
-            </Link>
-            <Link to="#exeCom" onClick={handleClick}>
-              <li className="p-3 border-b border-blue-600">Experience</li>
-            </Link>
-            <Link to="#projectCom" onClick={handleClick}>
-              <li className="p-3 border-b border-blue-600">projects</li>
-            </Link>
-            <Link to="#certificateCom" onClick={handleClick}>
-              <li className="p-3 border-b border-blue-600">Certificate</li>
-            </Link>
+            {!isSectionEmpty.education && (
+              <Link to="#eduCom" onClick={handleClick}>
+                <li className="p-3 border-b border-blue-600">Education</li>
+              </Link>
+            )}
+            {!isSectionEmpty.work && (
+              <Link to="#exeCom" onClick={handleClick}>
+                <li className="p-3 border-b border-blue-600">Experience</li>
+              </Link>
+            )}
+            {!isSectionEmpty.project && (
+              <Link to="#projectCom" onClick={handleClick}>
+                <li className="p-3 border-b border-blue-600">Projects</li>
+              </Link>
+            )}
+            {!isSectionEmpty.certificate && (
+              <Link to="#certificateCom" onClick={handleClick}>
+                <li className="p-3 border-b border-blue-600">Certificate</li>
+              </Link>
+            )}
             <Link to="#contactCom" onClick={handleClick}>
               <li className="p-3 border-b border-blue-600">Contact</li>
             </Link>
-            {currentUser ? (
+            {currentUser && (
               <Link to="/edit">
                 <li className="p-3 border-b border-blue-600 text-red-500">
                   Edit Page
                 </li>
               </Link>
-            ) : (
-              ""
             )}
           </ul>
         </div>
