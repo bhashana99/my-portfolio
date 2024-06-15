@@ -64,3 +64,13 @@ export const getProject = async (req, res, next) => {
     next(error);
   }
 }
+
+export const isProjectTableEmpty = async (req, res, next) => {
+  try {
+      const count = await Project.countDocuments();
+      const isEmpty = count === 0;
+      return res.status(200).json({ isEmpty });
+  } catch (error) {
+      next(error);
+  }
+};
