@@ -66,3 +66,13 @@ export const updateCertificate = async (req, res, next) => {
         next(error);
     }
 }
+
+export const isCertificateTableEmpty = async (req, res, next) => {
+    try {
+        const count = await Certificate.countDocuments();
+        const isEmpty = count === 0;
+        return res.status(200).json({ isEmpty });
+    } catch (error) {
+        next(error);
+    }
+};
