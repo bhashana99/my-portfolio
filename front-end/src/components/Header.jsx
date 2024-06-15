@@ -8,6 +8,7 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const [basicInfo, setBasicInfo] = useState({});
   const [showMenu, setShowMenu] = useState(true);
+  const [isCertificateEmpty, setIsCertificateEmpty] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const location = useLocation();
@@ -33,7 +34,19 @@ export default function Header() {
       }
     };
 
+    const checkIfCertificatesEmpty = async () => {
+      try {
+        const res = await fetch("/api/certificate/is-empty");
+        const data = await res.json();
+        setIsCertificateEmpty(data.isEmpty);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchBasicInfo();
+    checkIfCertificatesEmpty(); 
+
   }, []);
 
   useEffect(() => {
@@ -94,15 +107,17 @@ export default function Header() {
               projects
             </li>
           </Link>
-          <Link to="#certificateCom">
-            <li
-              className={`hidden sm:inline hover:text-blue-400 ${
-                location.hash === "#certificateCom" ? "underline" : ""
-              }`}
-            >
-              Certificate
-            </li>
-          </Link>
+          {!isCertificateEmpty && (
+            <Link to="#certificateCom">
+              <li
+                className={`hidden sm:inline hover:text-blue-400 ${
+                  location.hash === "#certificateCom" ? "underline" : ""
+                }`}
+              >
+                Certificate
+              </li>
+            </Link>
+          )}
           <Link to="#contactCom">
             <li
               className={`hidden sm:inline  hover:text-blue-400 ${
