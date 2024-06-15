@@ -62,3 +62,14 @@ export const updateWork = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const isWorkTableEmpty = async (req, res, next) => {
+  try {
+      const count = await Work.countDocuments();
+      const isEmpty = count === 0;
+      return res.status(200).json({ isEmpty });
+  } catch (error) {
+      next(error);
+  }
+};
