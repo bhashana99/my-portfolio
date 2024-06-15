@@ -19,6 +19,8 @@ export default function ProjectComponent() {
     fetchProjects();
   }, []);
   return (
+    <>
+    {projects.length > 0 && (
     <div className="flex justify-center items-center min-h-screen" id="projectCom">
       <div className="w-full max-w-5xl mt-5 mx-5">
         <h1 className="text-2xl md:text-5xl font-bold font-mono text-center underline">
@@ -65,5 +67,7 @@ export default function ProjectComponent() {
         </div>
       </div>
     </div>
+    )}
+    </>
   );
 }
