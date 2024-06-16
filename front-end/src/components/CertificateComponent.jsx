@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import cImg from "../assets/certificateImg.png";
 import DotLoader from "react-spinners/DotLoader";
+import FadeIn from "./FadeIn";
 
 export default function EduComponent() {
   const [certificates, setCertificates] = useState([]);
@@ -32,9 +33,11 @@ export default function EduComponent() {
               Certificate
             </h1>
             <div className="grid md:grid-cols-2 items-center mt-5 gap-8">
+            <FadeIn delay={0.3} direction="middle" padding fullWidth>
               <div className="flex justify-center">
                 <img src={cImg} alt="certificate" className="w-full max-w-sm" />
               </div>
+              </FadeIn>
               <div className="flex flex-col items-center">
                 {loading ? (
                   <DotLoader color="#000000" />
