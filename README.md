@@ -34,9 +34,9 @@ Dynamic Portfolio Hub is a fully customizable portfolio website built using the 
    ```bash
    cd front-end
    npm install
-5. Create a .env File
+### 5. Create a .env File
    **Create a .env File in the Root Directory**
    - Open the `.env` file and add your MongoDB connection string and other environment variables.
 
- **Add JWT_SECRET Key**:
+    **Add JWT_SECRET Key**:
    - Add a `JWT_SECRET` key of your choice in the `.env` file.
