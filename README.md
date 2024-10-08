@@ -28,7 +28,7 @@ Dynamic Portfolio Hub is a fully customizable portfolio website built using the 
    cd dynamic-portfolio-hub
 3. Install dependencies for the back-end:
     ```bash
-      cd server
+      cd back-end
       npm install
 4. Install dependencies for the client:
    ```bash
