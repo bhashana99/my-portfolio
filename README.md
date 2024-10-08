@@ -17,6 +17,19 @@ Dynamic Portfolio Hub is a fully customizable portfolio website built using the 
 - **Database**: MongoDB, Firebase
 - **Deployment**: Render.com
 
+## Demo
+
+Check out the live demo: [Demo Link](https://portfolio-template-4kpe.onrender.com/)
+
+## Editing Panel Credentials
+
+To customize your portfolio, use the editing panel:
+- **Username**: `username1`
+- **Password**: `password1`
+
+You can log in to the editing panel, make changes to your portfolio in real-time, and save your customizations. The changes will be reflected immediately.
+
+
 ## Installation
 
 1. Clone the repository:
