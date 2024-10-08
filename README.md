@@ -21,4 +21,22 @@ Dynamic Portfolio Hub is a fully customizable portfolio website built using the 
 
 1. Clone the repository:
    ```bash
-   git clone <https://github.com/bhashana99/my-portfolio.git>
+   git clone https://github.com/bhashana99/my-portfolio.git
+
+2. Navigate to the project directory:
+   ```bash
+   cd dynamic-portfolio-hub
+3. Install dependencies for the back-end:
+    ```bash
+      cd server
+      npm install
+4. Install dependencies for the client:
+   ```bash
+   cd front-end
+   npm install
+5. Create a .env File
+   **Create a .env File in the Root Directory**
+   - Open the `.env` file and add your MongoDB connection string and other environment variables.
+
+ **Add JWT_SECRET Key**:
+   - Add a `JWT_SECRET` key of your choice in the `.env` file.
