@@ -34,9 +34,20 @@ Dynamic Portfolio Hub is a fully customizable portfolio website built using the 
    ```bash
    cd front-end
    npm install
-### 5. Create a .env File
-   **Create a .env File in the Root Directory**
+5. Create a .env File in the Root Directory
    - Open the `.env` file and add your MongoDB connection string and other environment variables.
 
     **Add JWT_SECRET Key**:
    - Add a `JWT_SECRET` key of your choice in the `.env` file.
+  
+6. Create a .env File in the Frontend Directory
+   - Cut & paste the `apiKey` value from `firebase.js` to your `.env` file in the frontend directory.
+   - Set the `apiKey` in the `.env` file.
+7. Open Postman & Create a New Post Request for Register User:
+   - Use Postman to send requests for user registration and any other necessary API calls.'
+8. Customize Your Portfolio
+   - Go to the portfolio footer, click the edit page, log in, and customize your portfolio as desired.
+
+### For More Details
+
+For more detailed instructions on how to use the customizable portfolio template, refer to [this article](https://medium.com/@bhashanachamodya99/how-to-use-my-customizable-portfolio-template-55d82c6cec90).
